@@ -9,9 +9,13 @@
     <p class="text-red-400 text-xs mb-2">{{ $message }}</p>
   @enderror
   <input type="file" wire:model="image">
+  {{-- 
+  
   @if ($image)
     <img src="{{ $image->temporaryUrl() }}" class="mt-2 rounded w-32">
   @endif
+  --}}
+  
   <div class="flex justify-between items-center">
     <div class="text-xs text-gray-400 flex gap-2">
       <span>+ Image</span>
