@@ -1,4 +1,5 @@
-<div class="post">
+<form wire:submit.prevent="createPost" class="post">
+
   <textarea 
     wire:model="content"
     placeholder="What are you playing?" 
@@ -8,17 +9,24 @@
   @error('content')
     <p class="text-red-400 text-xs mb-2">{{ $message }}</p>
   @enderror
+
   <input type="file" wire:model="image">
+
   @if ($image)
     <img src="{{ $image->temporaryUrl() }}" class="mt-2 rounded w-32">
   @endif
-  <div class="flex justify-between items-center">
+
+  <div class="flex justify-between items-center mt-3">
+
     <div class="text-xs text-gray-400 flex gap-2">
       <span>+ Image</span>
       <span>+ tag</span>
     </div>
-    <button wire:click="createPost" class="bg-[#6246ea] px-4 py-2 rounded-full">
+
+    <button type="submit" class="bg-[#6246ea] px-4 py-2 rounded-full">
       Post
     </button>
+
   </div>
-</div>
+
+</form>

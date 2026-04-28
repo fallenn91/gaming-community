@@ -5,6 +5,7 @@ namespace App\Livewire\Feed;
 use Livewire\Component;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithFileUploads;
 
 class CreatePost extends Component
 {
@@ -15,7 +16,7 @@ class CreatePost extends Component
 
     protected $rules = [
       'content' => 'required|string|max:500',
-      'image' => 'nullable|images|mimes:jpg,jpeg,png|max:2048',
+      'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ];
 
     public function render()
@@ -29,9 +30,9 @@ class CreatePost extends Component
 
        $imagePath = null;
 
-      if ($request->hasFile('image')) {
+      if ($this->image) {
         $filename = time() . '.' . $request->image->extension();
-        $imagePath = $request->image->storeAs('PostImage', $filename, 'public');
+        $imagePath = $this->image->storeAs('PostImage', $filename, 'public');
       }
 
       Post::create([
@@ -39,6 +40,8 @@ class CreatePost extends Component
         'content' => $this->content,
         'image' => $imagePath,
       ]);
+
+      Auth::user()->addXp(10);
 
       $this->reset(['content', 'image']);
 

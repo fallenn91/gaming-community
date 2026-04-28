@@ -28,6 +28,7 @@ class User extends Authenticatable
         'level',
         'xp',
         'is_online',
+        'last_seen',
         'created_at',
         'updated_at',
     ];
@@ -51,8 +52,35 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'last_seen' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+      return $this->belongsTo(Role::class);
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->last_seen && $this->last_seen->gt(now()->subMinutes(5));
+    }
+
+    public function addXp(int $amount): void
+    {
+      $this->xp += $amount;
+
+      while ($this->xp >= $this->xpForNextLevel()) {
+        $this->level++;
+      }
+
+      $this->save();
+    }
+
+    public function xpForNextLevel(): int
+    {
+      return $this->level * 100;
     }
 
     public function posts()
@@ -96,7 +124,7 @@ class User extends Authenticatable
 
     public function messagesReceived()
     {
-      return $this->hasMany(Message::class, 'receiver:id');
+      return $this->hasMany(Message::class, 'receiver_id');
     }
 
     public function notifications()

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedInteger('level')->default(1);
             $table->unsignedInteger('xp')->default(0);
             $table->boolean('is_online')->default(true);
+            $table->timestamp('last_seen')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
