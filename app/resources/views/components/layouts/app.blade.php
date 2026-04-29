@@ -9,7 +9,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-[#1a1333] text-white">
@@ -30,10 +29,10 @@
 
     <!-- NAV LINKS -->
     <nav class="flex gap-6 text-sm text-gray-300">
-      <a class="hover:text-[#a78bfa]" href="#">Home</a>
+      <a class="hover:text-[#a78bfa]" href="{{ route('home')}}">Home</a>
       <a class="hover:text-[#a78bfa]" href="#">Explore</a>
       <a class="hover:text-[#a78bfa]" href="#">Create</a>
-      <a class="hover:text-[#a78bfa]" href="#">Profile</a>
+      <a class="hover:text-[#a78bfa]" href="{{ route('profile', auth()->user()) }}">Profile</a>
       <form method="POST" action="{{ route('logout') }}">
         @csrf
         <button type="submit" class="hover:text-red-400">
@@ -46,14 +45,15 @@
 </header>
 
 <!-- MAIN CONTENT -->
-<div class="max-w-6xl mx-auto pt-20 px-4 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+<div class="w-full pt-20 px-4 md:px-12 gap-6 flex">
   
     <!-- SLOT (aquí entra Livewire o Blade) -->
-    <main class="space-y-4">
+    <main class="space-y-4 flex-1">
         {{ $slot }}
     </main>
 
     <!-- RIGHT SIDEBAR -->
+    @if (request()->routeIs('home'))
     <aside class="space-y-6">
         <div>
           <h3 class="text-[#a78bfa] mb-3 text-lg">{{ auth()->user()->username }}</h3>
@@ -94,6 +94,7 @@
         </div>
 
     </aside>
+    @endif
 </div>
 
 @livewireScripts

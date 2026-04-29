@@ -84,3 +84,13 @@ body.home {
 .post:hover {
   box-shadow: 0 10px 40px rgba(167,139,250,0.2);
 }
+
+.badge {
+  background: rgba(255, 43, 214, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.4px);
+  -webkit-backdrop-filter: blur(5.4px);
+  border: 1px solid rgba(255, 43, 214, 0.26);
+  padding: 5px 10px;
+}
