@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         'username' => 'admin',
         'email' => 'admin@test.com',
         'password' => Hash::make('password'),
-        'level' => 10,
+        'level' => 999,
         'xp' => 9999,
         'bio' => 'Administrador de la comunidad',
         'is_online' => true,

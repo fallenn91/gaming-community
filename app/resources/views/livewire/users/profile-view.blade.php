@@ -1,6 +1,51 @@
 <div class="w-full">
   <div class="relative w-full">
-      <div class="w-full h-48 bg-gradient-to-r from-[#a78bfa] to-fuchsia-500 rounded-lg mb-3"></div>
+      <!-- PROFILE HEADER -->
+    <div class="bg-black/30 rounded-xl overflow-hidden">
+
+      <!-- BANNER -->
+      <div class="h-40 bg-gradient-to-br from-[#1a1333] to-[#0f0a24] relative">
+
+        <!-- glow effects -->
+        <div class="absolute w-60 h-60 bg-[#a78bfa]/20 blur-3xl rounded-full -top-20 -left-20"></div>
+        <div class="absolute w-60 h-60 bg-fuchsia-500/20 blur-3xl rounded-full -bottom-20 -right-20"></div>
+
+      </div>
+
+      <!-- PROFILE INFO -->
+      <div class="px-4 pb-4 relative">
+
+        <!-- AVATAR -->
+        <div class="absolute -top-10">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-r from-[#a78bfa] to-fuchsia-500 p-[2px]">
+            <div class="w-full h-full rounded-full bg-black"></div>
+          </div>
+        </div>
+
+        <!-- TEXT -->
+        <div class="pt-12">
+          <h2 class="text-lg text-[#a78bfa] font-bold">@cyber_user</h2>
+
+          <p class="text-xs text-purple-400">Lv.12 • 340 XP</p>
+
+          <p class="text-sm text-gray-400 mt-2">
+            FPS player • Indie dev • Night grinder ⚡
+          </p>
+
+          <!-- ACTIONS -->
+          <div class="flex gap-3 mt-3">
+            <button class="bg-[#6246ea] px-4 py-1 rounded-full text-sm">
+              Follow
+            </button>
+            <button class="border border-[#a78bfa]/30 px-4 py-1 rounded-full text-sm">
+              Message
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
   </div>
   <div class="w-full min-h-screen flex flex-col p-12 gap-3">
       <div class="w-full p-4 rounded-lg flex justify-evenly items-center gap-5">

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
           CommentSeeder::class,
           FollowSeeder::class,
           RoleSeeder::class,
+          TagSeeder::class,
         ]);
     }
 }

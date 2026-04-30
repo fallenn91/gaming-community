@@ -33,12 +33,13 @@
           </p>
   
           @if ($post->image)
-              <img src="{{ asset('storage/' . $post->image) }}" class="mt-2 rounded-lg">
+              <img src="{{ asset('storage/' . $post->image) }}" class="mt-3 rounded-lg border border-white/5 hover:scale-[1.01] transition">
           @endif
   
           <div class="flex gap-4 mt-4 text-sm text-gray-400">
               <button class="hover:text-pink-400">❤️ {{ $post->likes->count() ?? 0 }}</button>
               <button class="hover:text-cyan-400">💬 {{ $post->comments->count() ?? 0 }}</button>
+              <button class="hover:text-green-400 transition">🔁 Share</button>
           </div>
   
       </div>
