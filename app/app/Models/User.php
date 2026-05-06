@@ -68,20 +68,18 @@ class User extends Authenticatable
         return $this->last_seen && $this->last_seen->gt(now()->subMinutes(5));
     }
 
-    public function addXp(int $amount): void
+    public function getXpInLevelAttribute()
     {
-      $this->xp += $amount;
+        $currentLevelXp = ($this->level * $this->level) * 100;
 
-      while ($this->xp >= $this->xpForNextLevel()) {
-        $this->level++;
-      }
-
-      $this->save();
+        return $this->xp - $currentLevelXp;
     }
 
     public function xpForNextLevel(): int
     {
-      return $this->level * 100;
+      $nextLevel = $this->level + 1;
+
+      return ($nextLevel * $nextLevel) * 100;
     }
 
     public function posts()
@@ -136,5 +134,16 @@ class User extends Authenticatable
     public function games()
     {
       return $this->belongsToMany(Game::class, 'user_games');
+    }
+
+    public function achievements()
+    {
+      return $this->belongsToMany(Achievement::class, 'user_achievements')
+        ->withPivot('progress', 'unlocked_at');
+    }
+
+    public function getAchievementLevelAttribute(): int
+    {
+      return (int) floor(sqrt($this->xp / 100));
     }
 }

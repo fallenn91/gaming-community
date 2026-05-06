@@ -13,6 +13,7 @@ class CreatePost extends Component
 
     public $content = '';
     public $image;
+    public $post;
 
     protected $rules = [
       'content' => 'required|string|max:500',
@@ -35,16 +36,16 @@ class CreatePost extends Component
         $imagePath = $this->image->storeAs('PostImage', $filename, 'public');
       }
 
-      Post::create([
+      $post = Post::create([
         'user_id' => Auth::id(),
         'content' => $this->content,
         'image' => $imagePath,
       ]);
 
-      Auth::user()->addXp(10);
+      event(new \App\Events\PostCreated($post));
 
       $this->reset(['content', 'image']);
 
-      $this->dispatch('post-created');
+      $this->dispatch('postCreated');
     }
 }

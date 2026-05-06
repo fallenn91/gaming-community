@@ -11,7 +11,7 @@ class LikeController extends Controller
      */
     public function index()
     {
-        //
+        $likes = auth()->user()->likes()->with('post')->get();
     }
 
     /**
@@ -19,7 +19,10 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $likes = auth()->user()->likes()->create([
+            'user_id'  => auth()->id(),
+            'post_id' => $request->input('post_id'),
+        ]);
     }
 
     /**
@@ -27,7 +30,7 @@ class LikeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $likes = auth()->user()->likes()->with('post')->findOrFail($id);
     }
 
     /**
@@ -35,7 +38,10 @@ class LikeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $likes = auth()->user()->likes()->findOrFail($id);
+        $likes->update([
+            'post_id' => $request->input('post_id'),
+        ]);
     }
 
     /**
@@ -43,6 +49,7 @@ class LikeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $likes = auth()->user()->likes()->findOrFail($id);
+        $likes->delete();
     }
 }

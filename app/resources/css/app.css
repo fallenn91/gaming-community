@@ -171,3 +171,11 @@ body.home {
               0 0 0 1px rgba(255,255,255,0.08) inset,
               0 0 80px rgba(139,92,246,0.3) inset;
 }
+
+.post-comments {
+  display: none;
+}
+
+.post-comments.show {
+  display: block;
+}

@@ -11,7 +11,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comments = Comment::with('user', 'post')->get();
     }
 
     /**
@@ -19,7 +19,13 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comments = Comment::create([
+            'user_id' => auth()->id(),
+            'post_id' => $request->input('post_id'),
+            'content' => $request->input('content'),
+        ]);
+        
+        return redirect()->back()->with('success', 'Comment created successfully!');
     }
 
     /**
@@ -27,7 +33,8 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $comment = Comment::with('user', 'post')->findOrFail($id);
+        return view('comments.show', compact('comment'));
     }
 
     /**
@@ -35,7 +42,9 @@ class CommentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->update($request->only('content'));
+        return redirect()->back()->with('success', 'Comment updated successfully!');
     }
 
     /**
@@ -43,6 +52,8 @@ class CommentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+        return redirect()->back()->with('success', 'Comment deleted successfully!');
     }
 }

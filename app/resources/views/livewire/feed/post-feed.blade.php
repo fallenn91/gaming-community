@@ -37,14 +37,34 @@
           @endif
   
           <div class="flex gap-4 mt-4 text-sm text-gray-400">
-              <button class="hover:text-pink-400">❤️ {{ $post->likes->count() ?? 0 }}</button>
-              <button class="hover:text-cyan-400">💬 {{ $post->comments->count() ?? 0 }}</button>
+              <livewire:interactions.like-button :post="$post" :key="'like-button-' . $post->id" />
+              <button class="btnComment hover:text-cyan-400">💬 {{ $post->comments->count() ?? 0 }}</button>
               <button class="hover:text-green-400 transition">🔁 Share</button>
           </div>
-  
+          @if ($post->user_id === auth()->id())
+            <button wire:click="deletePost({{ $post->id }})" class="text-red-400 hover:text-red-600 transition duration-300 cursor-pointer mt-3">Delete</button>
+          @endif
+          <livewire:interactions.comment-box :post="$post" :key="'comment-box-' . $post->id" />
       </div>
   @endforeach
   <div class="m-5">
       {{ $posts->links() }}
   </div>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    const comments = document.querySelectorAll('.post-comments');
+    const btnComments = document.querySelectorAll('.btnComment');
+  
+    btnComments.forEach((btn, index) => {
+      btn.addEventListener('click', function() {
+        if(comments[index]) {
+          comments[index].classList.toggle('show');
+        }
+      });
+    });
+    
+  });
+</script>
