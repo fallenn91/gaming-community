@@ -21,8 +21,11 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('banner')->nullable();
             $table->string('bio')->nullable();
-            $table->unsignedInteger('level')->default(1);
-            $table->unsignedInteger('xp')->default(0);
+            $table->unsignedInteger('level')->default(1); // Progresión
+            $table->unsignedInteger('xp')->default(0); // Actividad
+            $table->integer('reputation')->default(0); // Reputación
+            $table->unsignedInteger('followers_count')->default(0); // Seguidores actuales
+            $table->unsignedInteger('following_count')->default(0); // Usuarios seguidos
             $table->boolean('is_online')->default(true);
             $table->timestamp('last_seen')->nullable();
             $table->rememberToken();

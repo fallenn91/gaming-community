@@ -13,7 +13,7 @@
                       </div>
   
                       <span class="text-sm text-cyan-300">
-                          {{ $post->user->username }}
+                          <a href="{{ route('profile', $post->user->id) }}">{{ $post->user->username }}</a>                          
                       </span>
                   </div>
   

@@ -44,12 +44,7 @@
 
         {{-- ACTIONS --}}
         <div class="flex gap-3 mt-4 mb-4">
-          <button class="px-4 py-1.5 rounded-full text-sm font-medium text-white transition"
-                  style="background: linear-gradient(135deg, #8b5cf6, #6246ea);"
-                  onmouseover="this.style.boxShadow='0 0 20px rgba(139,92,246,0.5)'"
-                  onmouseout="this.style.boxShadow='none'">
-            Follow
-          </button>
+          <livewire:interactions.follow-button :user="$user" :key="'follow-'.$user->id" /> 
           <button class="px-4 py-1.5 rounded-full text-sm transition"
                   style="border: 1px solid rgba(139,92,246,0.4); color: #ddd6fe; background: rgba(139,92,246,0.08);"
                   onmouseover="this.style.borderColor='rgba(139,92,246,0.8)'"
@@ -67,15 +62,25 @@
     
 
     {{-- STATS / SOCIAL --}}
-    <div class="flex gap-2 flex-wrap">      
-      @foreach([['Followers', $user->followers->count()], ['Following', $user->following->count()], ['Likes', $user->likes->count()]] as [$label, $count])
-        <span class="px-4 py-2 rounded-lg text-sm cursor-pointer transition"
-              style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.35); color: #ddd6fe;"
-              onmouseover="this.style.borderColor='rgba(139,92,246,0.7)'"
-              onmouseout="this.style.borderColor='rgba(139,92,246,0.35)'">
-          {{ $label }} <span style="color: rgba(217,70,239,0.9);">{{ $count }}</span>
-        </span>
-      @endforeach
+    <div class="flex gap-2 flex-wrap">
+        @foreach([
+            ['Followers', $followersCount],
+            ['Following', $followingCount],
+            ['Likes', $likesCount]
+        ] as [$label, $count])
+
+            <span class="px-4 py-2 rounded-lg text-sm cursor-pointer transition"
+                  style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.35); color: #ddd6fe;"
+                  onmouseover="this.style.borderColor='rgba(139,92,246,0.7)'"
+                  onmouseout="this.style.borderColor='rgba(139,92,246,0.35)'">
+
+                {{ $label }}
+                <span style="color: rgba(217,70,239,0.9);">
+                    {{ $count }}
+                </span>
+            </span>
+
+        @endforeach
     </div>
 
     {{-- POSTS --}}

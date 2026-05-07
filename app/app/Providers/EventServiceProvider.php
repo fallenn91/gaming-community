@@ -16,6 +16,13 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\PostCreated::class => [
             \App\Listeners\HandlePostCreated::class,
         ],
+        \App\Events\UserFollowed::class => [
+            \App\Listeners\HandleFollow::class,
+        ],
+        \App\Events\UserUnfollowed::class => [
+            \App\Listeners\HandleUnfollow::class,
+        ],
+
     ];
 
     /**

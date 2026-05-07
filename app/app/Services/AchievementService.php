@@ -21,9 +21,9 @@ class AchievementService
       foreach($achievements as $achievement) {
 
         $alreadyUnlocked = UserAchievement::where([
-          'user_id' => $user_id,
+          'user_id' => $user->id,
           'achievement_id' => $achievement->id,
-        ])->exists;
+        ])->exists();
 
         if ($alreadyUnlocked) {
           continue;
@@ -48,11 +48,19 @@ class AchievementService
 
         'comments' => $user->comments()->count() >= $achievement->threshold,
 
+        'follows' => $user->following()->count() >= $achievement->threshold,
+
+        'followers_received' => $user->followers()->count() >= $achievement->threshold,
+
+        'reputation' => $user->reputation >= $achievement->threshold,
+        
         'likes_received' =>
           $user->posts()
             ->withCount('likes')
             ->get()
             ->sum('likes_count') >= $achievement->threshold,
+
+        
 
         default => false,
       };

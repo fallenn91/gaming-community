@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
-
+    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -28,6 +28,9 @@ class User extends Authenticatable
         'bio',
         'level',
         'xp',
+        'reputation',
+        'followers_count',
+        'following_count',
         'is_online',
         'last_seen',
         'created_at',
