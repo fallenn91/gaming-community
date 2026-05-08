@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\UserUnfollowed::class => [
             \App\Listeners\HandleUnfollow::class,
         ],
+        \App\Events\AchievementUnlocked::class => [
+            \App\Listeners\SendAchievementToast::class,
+        ],
 
     ];
 

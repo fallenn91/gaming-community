@@ -179,3 +179,37 @@ body.home {
 .post-comments.show {
   display: block;
 }
+
+/* ACHIEVEMENTS */
+
+.toast-success {
+  background: radial-gradient(circle at top left, var(--primary), var(--primary-dark));
+  color: var(--blanco);
+  border: 1px solid var(--magenta);
+  box-shadow: 0 0 25px var(--glow-primary),
+              0 0 60px var(--glow-magenta);
+}
+
+.toast-default {
+  background: var(--fondo-card);
+  color: var(--blanco);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+}
+
+.toast-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@keyframes pop {
+  0% {
+    transform: translateY(10px) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}

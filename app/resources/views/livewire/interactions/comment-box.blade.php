@@ -4,7 +4,7 @@
   <div class="space-y-2">
     @foreach($comments as $comment)
       <div class="flex gap-3">
-        <strong class="text-cyan-300">{{ $comment->user->username}}: </strong>
+        <a href="{{ route('profile', $comment->user->id)}}" class="cursor-pointer"><strong class="text-cyan-300">{{ $comment->user->username}}: </strong></a>
         <p class="text-white">{{ $comment->content }}</p>
 
         @if ($comment->user_id === auth()->id())

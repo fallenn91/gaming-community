@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Achievement;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -14,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $admin = User::create([
         'name' => 'Admin',
         'username' => 'admin',
         'email' => 'admin@test.com',
@@ -46,5 +47,16 @@ class UserSeeder extends Seeder
           'bio' => 'LoL main 🧠',
           'is_online' => false,
       ]);
+
+      $achievements = Achievement::all();
+
+        foreach ($achievements as $achievement) {
+            $admin->achievements()->syncWithoutDetaching([
+                $achievement->id => [
+                    'unlocked_at' => now(),
+                ]
+            ]);
+        }
     }
+    
 }

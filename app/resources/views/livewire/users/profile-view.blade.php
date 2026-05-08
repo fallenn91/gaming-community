@@ -1,5 +1,4 @@
 <div class="w-full">
-
   {{-- PROFILE HEADER --}}
   <div class="rounded-2xl overflow-hidden"
        style="background: rgba(255,255,255,0.07); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.35); box-shadow: 0 8px 40px rgba(0,0,0,0.4);">
@@ -43,8 +42,9 @@
         </p>
 
         {{-- ACTIONS --}}
+        @if (auth()->id() !== $user->id)
         <div class="flex gap-3 mt-4 mb-4">
-          <livewire:interactions.follow-button :user="$user" :key="'follow-'.$user->id" /> 
+          <livewire:interactions.follow-button :user="$user" wire:key="follow-{{ $user->id }}" /> 
           <button class="px-4 py-1.5 rounded-full text-sm transition"
                   style="border: 1px solid rgba(139,92,246,0.4); color: #ddd6fe; background: rgba(139,92,246,0.08);"
                   onmouseover="this.style.borderColor='rgba(139,92,246,0.8)'"
@@ -52,85 +52,71 @@
             Message
           </button>
         </div>
+        @endif
       </div>
     </div>
   </div>
 
   {{-- PROFILE BODY --}}
   <div class="w-full flex flex-col gap-4 mt-4">
+        
+      {{-- STATS / SOCIAL --}}
+      <div class="flex gap-2 flex-wrap">
+          @foreach([
+              ['Followers', $followersCount],
+              ['Following', $followingCount],
+              ['Likes', $likesCount]
+          ] as [$label, $count])
 
-    
+              <span class="px-4 py-2 rounded-lg text-sm transition"
+                    style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.35); color: #ddd6fe;"
+                    onmouseover="this.style.borderColor='rgba(139,92,246,0.7)'"
+                    onmouseout="this.style.borderColor='rgba(139,92,246,0.35)'">
 
-    {{-- STATS / SOCIAL --}}
-    <div class="flex gap-2 flex-wrap">
-        @foreach([
-            ['Followers', $followersCount],
-            ['Following', $followingCount],
-            ['Likes', $likesCount]
-        ] as [$label, $count])
+                  {{ $label }}
+                  <span style="color: rgba(217,70,239,0.9);">
+                      {{ $count }}
+                  </span>
+              </span>
 
-            <span class="px-4 py-2 rounded-lg text-sm cursor-pointer transition"
-                  style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.35); color: #ddd6fe;"
-                  onmouseover="this.style.borderColor='rgba(139,92,246,0.7)'"
-                  onmouseout="this.style.borderColor='rgba(139,92,246,0.35)'">
+          @endforeach
+      </div>
 
-                {{ $label }}
-                <span style="color: rgba(217,70,239,0.9);">
-                    {{ $count }}
-                </span>
-            </span>
+      {{-- ACHIEVEMENTS --}}
+      @if ($user->achievements->count())
+      
+          <div class="mt-4">
+            <p class="text-xs mb-2 uppercase tracking-widest" style="color: rgba(217, 70, 239, 0.8);">
+              Achievements
+            </p>
 
-        @endforeach
-    </div>
+            <div class="flex flex-wrap gap-2">
+              @foreach ($user->achievements as $achievement)
+                  <div class="px-3 py-2 rounded-lg text-xs flex items-center gap-2 transition"
+                    style="background: rgba(139,92,246,0.12);
+                          border: 1px solid rgba(139,92,246,0.3);
+                          color: #ddd6fe;
+                          backdrop-filter: blur(10px);"
+                    onmouseover="this.style.borderColor='rgba(217, 70, 239, 0.6)'"
+                    onmouseout="this.style.borderColor='rgba(139, 92, 246, 0.3)'">
 
-    {{-- POSTS --}}
-    <div class="flex flex-col gap-3">
-      @foreach ($user->posts as $post)
-        <div class="rounded-2xl p-4 transition"
-             style="background: rgba(139,92,246,0.08); backdrop-filter: blur(12px); border: 1px solid rgba(139,92,246,0.25); box-shadow: 0 4px 20px rgba(0,0,0,0.3);"
-             onmouseover="this.style.borderColor='rgba(139,92,246,0.5)'; this.style.boxShadow='0 8px 30px rgba(139,92,246,0.15)'"
-             onmouseout="this.style.borderColor='rgba(139,92,246,0.25)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.3)'">
+                    <span>🏆</span>
 
-          {{-- Post header --}}
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 rounded-full flex-shrink-0"
-                 style="background: linear-gradient(135deg, #8b5cf6, #d946ef);"></div>
-            <div>
-              <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full {{ $post->user->isOnline() ? 'bg-green-400' : 'bg-gray-500' }}"></div>
-                <span class="text-sm font-medium" style="color: #ddd6fe;">
-                  {{ $post->user->username }}
-                </span>
-              </div>
-              <p class="text-xs" style="color: rgba(217,70,239,0.75);">
-                {{ $post->user->role ?? 'Member' }}
-              </p>
-              <p class="text-xs" style="color: rgba(221,214,254,0.3);">
-                {{ $post->created_at->diffForHumans() }}
-              </p>
+                    <div class="flex flex-col leading-tight">
+                      <span class="font-semibold">
+                        {{ $achievement->name }}
+                      </span>
+
+                      <span class="text-[10px]" style="color: rgba(217, 70, 239, 0.7)">
+                          +{{ $achievement->xp_reward }} XP
+                      </span>
+                    </div>
+                  </div>
+              @endforeach
             </div>
           </div>
-
-          {{-- Post content --}}
-          <p class="text-sm" style="color: rgba(255,255,255,0.85);">{{ $post->content }}</p>
-
-          @if ($post->image)
-            <img src="{{ asset('storage/' . $post->image) }}" class="mt-3 rounded-xl w-full object-cover">
-          @endif
-
-          {{-- Actions --}}
-          <div class="flex gap-4 mt-4 text-sm" style="color: rgba(221,214,254,0.4);">
-            <button class="transition hover:text-pink-400">❤️ {{ $post->likes->count() }}</button>
-            <button class="transition" style="color: rgba(221,214,254,0.4);"
-                    onmouseover="this.style.color='rgba(139,92,246,0.9)'"
-                    onmouseout="this.style.color='rgba(221,214,254,0.4)'">
-              💬 {{ $post->comments->count() }}
-            </button>
-          </div>
-
-        </div>
-      @endforeach
-    </div>
-
+      @endif
+    {{-- POSTS --}}
+      <livewire:feed.post-feed :user="$user"/>
   </div>
 </div>

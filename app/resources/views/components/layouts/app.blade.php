@@ -48,6 +48,33 @@
 <div class="max-w-6xl mx-auto pt-20 px-4 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
   
     <!-- SLOT (aquí entra Livewire o Blade) -->
+    <div
+    x-data="{ show: false, message: '', type: 'success' }"
+    x-on:toast.window="
+        message = $event.detail.message;
+        type = $event.detail.type ?? 'success';
+        show = true;
+        setTimeout(() => show = false, 3500);
+    "
+    class="fixed bottom-5 right-5 z-50"
+  >
+      <div
+          x-show="show"
+          x-transition
+          class="px-5 py-4 rounded-2xl shadow-lg border backdrop-blur-md"
+          :class="type === 'success' ? 'toast-success' : 'toast-default'"
+      >
+          <div class="flex items-center gap-3">
+              <div class="text-2xl">🏆</div>
+              <div>
+                  <p class="text-sm font-semibold text-white">
+                      Achievement desbloqueado
+                  </p>
+                  <p class="text-xs opacity-80 text-white" x-text="message"></p>
+              </div>
+          </div>
+      </div>
+  </div>
     <main class="space-y-4">
         {{ $slot }}
     </main>
@@ -84,7 +111,7 @@
               @foreach ($users->take(3) as $user)    
               <div class="flex items-center gap-2">
                   <div class="w-6 h-6 rounded-full bg-gradient-to-r from-[#a78bfa] to-fuchsia-500"></div>
-                  <span>{{ $user->username }}</span>
+                  <a href="{{ route('profile', $user->id)}}" class="hover:text-cyan-300 transition duration-300"><span>{{ $user->username }}</span></a>
               </div>
               @endforeach
             </div>

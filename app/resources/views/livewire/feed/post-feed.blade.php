@@ -37,8 +37,8 @@
           @endif
   
           <div class="flex gap-4 mt-4 text-sm text-gray-400">
-              <livewire:interactions.like-button :post="$post" :key="'like-button-' . $post->id" />
-              <button class="btnComment hover:text-cyan-400">💬 {{ $post->comments->count() ?? 0 }}</button>
+              <livewire:interactions.like-button :post="$post" wire:key="like-button-{{ $post->id }}" />
+              <button class="btnComment hover:text-cyan-400 cursor-pointer">💬 {{ $post->comments->count() ?? 0 }}</button>
               <button class="hover:text-green-400 transition">🔁 Share</button>
           </div>
           @if ($post->user_id === auth()->id())

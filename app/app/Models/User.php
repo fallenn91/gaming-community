@@ -142,7 +142,7 @@ class User extends Authenticatable
     public function achievements()
     {
       return $this->belongsToMany(Achievement::class, 'user_achievements')
-        ->withPivot('progress', 'unlocked_at');
+        ->withPivot('unlocked_at');
     }
 
     public function getAchievementLevelAttribute(): int

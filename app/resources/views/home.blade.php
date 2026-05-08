@@ -1,6 +1,7 @@
 <x-layouts.app>
 
   {{-- HERO BANNER --}}
+  
   <div class="w-full h-[250px] relative overflow-hidden flex items-center justify-center"
        style="background: linear-gradient(135deg, #100828 0%, #1e0f45 50%, #100828 100%);">
     <div class="absolute w-72 h-72 rounded-full top-[-50px] left-[-50px]"
@@ -17,7 +18,7 @@
       </p>
     </div>
   </div>
-
+  
   {{-- TRENDING TAGS --}}
   <div class="rounded-xl p-4"
        style="background: var(--fondo-card); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.3);">
@@ -69,7 +70,7 @@
       Welcome to CYBERCOMM — the new gaming hub for players &amp; creators 🚀
     </p>
   </div>
-
+  
   <livewire:feed.create-post />
   <livewire:user.presence />
   <livewire:feed.post-feed />

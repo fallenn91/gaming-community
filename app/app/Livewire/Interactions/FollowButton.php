@@ -39,13 +39,10 @@ class FollowButton extends Component
       $authUser = auth()->user();
       
       // Evitar self-follow
-      if (! $authUser) {
+      if (! $authUser || $authUser->id === $this->user->id) {
         return;
       }
 
-      if ($authUser->id === $this->user->id) {
-        return;
-      }
       // Comprueba si usuario autenticado ya sigue al otro usuario
       if ($this->isFollowing) {
         // Deatch -> elimina la relación en la tabla pivote
@@ -58,8 +55,6 @@ class FollowButton extends Component
           $this->user
         ));
 
-        $this->dispatch('followUpdated', userId: $this->user->id);
-
       } else {
 
         $authUser->following()->attach($this->user->id);
@@ -70,13 +65,11 @@ class FollowButton extends Component
           $authUser,
           $this->user
         ));
-
-        $this->dispatch('followUpdated', userId: $this->user->id);
-
       }
-
+            
       $this->followersCount = $this->user->followers()->count();
       $this->followingCount = $this->user->following()->count();
+      $this->dispatch('followUpdated', userId: $this->user->id);
     }
 
     public function render()
