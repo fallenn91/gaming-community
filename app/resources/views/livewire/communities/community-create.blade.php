@@ -28,6 +28,11 @@
              focus:ring-2 focus:ring-[#a78bfa]"
     ></textarea>
 
+    <select wire:model="visibility">
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+    </select>
+
     <!-- GAME SELECT -->
     <div class="flex flex-col gap-1">
       <label class="text-xs text-gray-400">Related Game (optional)</label>

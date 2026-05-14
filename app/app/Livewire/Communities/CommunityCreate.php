@@ -4,25 +4,33 @@ namespace App\Livewire\Communities;
 use Illuminate\Support\Str;
 
 use Livewire\Component;
-use App\Models\Community;
 use App\Models\Game;
+use App\Services\CommunityCreationService;
 
 class CommunityCreate extends Component
 {
-    public $name;
-    public $description;
-    public $game_id;
+    public string $name = '';
+    public string $description = '';
+    public ?int $game_id = null;
     public $image;
-    public $tags = '';
+    public string $visibility = 'public';
 
     public function create()
     {
-      $community = Community::create([
+
+      $this->validate([
+          'name' => 'required|min:3|max:50',
+          'description' => 'nullable|max:255',
+          'visibility' => 'required|in:public,private',
+      ]);
+
+      $community = app(CommunityCreationService::class)
+      ->create(auth()->user(), [
         'name' => $this->name,
         'game_id' => $this->game_id,
-        'owner_id' => auth()->id(),
-        'slug' => Str::slug($this->name),
         'description' => $this->description,
+        'visibility' => $this->visibility,
+        'image' => null,
       ]);
 
       if ($this->image) {
@@ -30,9 +38,7 @@ class CommunityCreate extends Component
         $community->update(['image' => $path]);
       }
 
-      $community->users()->attach(auth()->id(), [
-        'role' => 'admin'
-      ]);
+      session()->flash('success', 'Community created successfully!');
 
       return redirect()->route('community', $community);
     }

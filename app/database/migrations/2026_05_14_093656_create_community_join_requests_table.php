@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('community_users', function (Blueprint $table) {
+        Schema::create('community_join_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('community_id')->constrained('communities')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->enum('role', ['member', 'moderator', 'admin'])->default('member');
-            $table->integer('contribution')->default(0);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
-            $table->unique(['community_id', 'user_id']);
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('community_users');
+        Schema::dropIfExists('community_join_requests');
     }
 };

@@ -12,7 +12,6 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
-    use Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -34,6 +33,7 @@ class User extends Authenticatable
         'following_count',
         'is_online',
         'last_seen',
+        'can_create_communities',
         'created_at',
         'updated_at',
     ];
@@ -153,6 +153,11 @@ class User extends Authenticatable
 
     public function communities()
     {
-      return $this->belongsToMany(Community::class, 'community_users')->withPivot('role');
+      return $this->belongsToMany(Community::class)->withPivot('role')->withTimestamps();
+    }
+
+    public function ownedCommunities()
+    {
+      return $this->hasMany(Community::class, 'owner_id');
     }
 }

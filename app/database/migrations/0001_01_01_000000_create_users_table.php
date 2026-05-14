@@ -28,6 +28,7 @@ return new class extends Migration
             $table->unsignedInteger('following_count')->default(0); // Usuarios seguidos
             $table->boolean('is_online')->default(true);
             $table->timestamp('last_seen')->nullable();
+            $table->boolean('can_create_communities')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -10,14 +10,19 @@ class Community extends Model
       'name',
       'game_id',
       'owner_id',
+      'level',
+      'xp',
+      'rank',
       'slug',
+      'visibility',
+      'status',
       'description',
       'image',
     ];
 
     public function users()
     {
-      return $this->belongsToMany(User::class, 'community_users')->withPivot('role');
+      return $this->belongsToMany(User::class)->withPivot('role');
     }
 
     public function owner()
@@ -33,5 +38,10 @@ class Community extends Model
     public function posts()
     {
       return $this->hasMany(CommunityPost::class);
+    }
+
+    public function members()
+    {
+      return $this->belongsToMany(User::class)->withPivot('role')->withTimestamps();
     }
 }

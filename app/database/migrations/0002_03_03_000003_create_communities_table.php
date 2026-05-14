@@ -16,8 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('game_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('level')->default(1);
+            $table->integer('xp')->default(0);
+            $table->string('rank')->default('Bronze');
             $table->string('slug')->unique();
+            $table->enum('visibility', ['public', 'private'])->default('public');
+            $table->enum('status', ['active', 'restricted', 'archived'])->default('active');
             $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
