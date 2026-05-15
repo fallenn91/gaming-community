@@ -29,7 +29,7 @@ class HandlePostCreated
         if ($user->userStat) {
           $user->userStat->increment('posts');
         }
-
+        
         app(AchievementService::class)->check($user, 'posts');
     }
 }

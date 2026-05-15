@@ -3,6 +3,7 @@
 namespace App\Livewire\Communities;
 
 use Livewire\Component;
+use App\Models\Community;
 
 class Leaderboard extends Component
 {

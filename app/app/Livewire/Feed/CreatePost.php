@@ -42,6 +42,7 @@ class CreatePost extends Component
         'image' => $imagePath,
       ]);
 
+      
       event(new \App\Events\PostCreated($post));
 
       $this->reset(['content', 'image']);

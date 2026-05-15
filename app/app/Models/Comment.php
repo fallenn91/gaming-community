@@ -10,7 +10,7 @@ class Comment extends Model
       'user_id',
       'post_id',
       'content',
-      'create_at',
+      'created_at',
       'updated_at',
     ];
 

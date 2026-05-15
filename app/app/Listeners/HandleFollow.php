@@ -51,7 +51,7 @@ class HandleFollow
 
         // Achievements
         $achievementService = app( \App\Services\AchievementService::class);
-
+        
         $achievementService->check($follower, 'follows');
 
         $achievementService->check($followed, 'followers_received');

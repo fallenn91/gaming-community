@@ -9,12 +9,15 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         \App\Events\CommentCreated::class => [
             \App\Listeners\HandleCommentCreated::class,
+            \App\Listeners\AwardGuildXp::class,
         ],
         \App\Events\LikeCreated::class => [
             \App\Listeners\HandleLikeCreated::class,
+            \App\Listeners\AwardGuildXp::class,
         ],
         \App\Events\PostCreated::class => [
             \App\Listeners\HandlePostCreated::class,
+            \App\Listeners\AwardGuildXp::class,
         ],
         \App\Events\UserFollowed::class => [
             \App\Listeners\HandleFollow::class,
@@ -25,6 +28,7 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\AchievementUnlocked::class => [
             \App\Listeners\SendAchievementToast::class,
         ],
+        
 
     ];
 

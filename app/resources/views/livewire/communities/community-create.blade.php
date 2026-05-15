@@ -1,96 +1,200 @@
-<div class="max-w-lg mx-auto">
+<div class="max-w-2xl mx-auto px-4 py-8">
 
-  <form wire:submit.prevent="create"
-        class="bg-black/20 border border-white/10 rounded-2xl p-5 flex flex-col gap-4 backdrop-blur-md">
-
-    <h2 class="text-lg text-[#a78bfa] font-semibold">
-      Create Community
-    </h2>
-
-    <!-- NAME -->
-    <div class="flex flex-col gap-1">
-      <label class="text-xs text-gray-400">Name</label>
-
-      <input
-        type="text"
-        wire:model.live="name"
-        placeholder="Community name"
-        class="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-sm
-               focus:ring-2 focus:ring-[#a78bfa]"
-      >
-    </div>
-
-    <!-- DESCRIPTION -->
-    <textarea
-      wire:model="description"
-      placeholder="What's your community about?"
-      class="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-sm h-24
-             focus:ring-2 focus:ring-[#a78bfa]"
-    ></textarea>
-
-    <select wire:model="visibility">
-        <option value="public">Public</option>
-        <option value="private">Private</option>
-    </select>
-
-    <!-- GAME SELECT -->
-    <div class="flex flex-col gap-1">
-      <label class="text-xs text-gray-400">Related Game (optional)</label>
-
-      <select wire:model="game_id"
-              class="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-sm">
-        <option value="">None</option>
-        @foreach($games as $game)
-          <option value="{{ $game->id }}">{{ $game->name }}</option>
-        @endforeach
-      </select>
-    </div>
-
-    <!-- IMAGE -->
-    <div class="flex flex-col gap-1">
-      <label class="text-xs text-gray-400">Image</label>
-
-      <input type="file"
-             wire:model="image"
-             class="text-sm text-gray-400">
-    </div>
-
-    <!-- TAGS -->
-    <input
-      type="text"
-      wire:model="tags"
-      placeholder="Tags (e.g. gaming, indie, chill)"
-      class="w-full p-2 bg-black/40 border border-white/10 rounded-lg text-sm"
+    <form
+        wire:submit.prevent="create"
+        class="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/70 p-6 md:p-8 shadow-2xl shadow-black/30 backdrop-blur-xl"
     >
 
-    <!-- PREVIEW -->
-    <div class="p-3 bg-black/30 border border-white/10 rounded-lg text-xs">
-      <p class="text-[#a78bfa] font-semibold">
-        Preview:
-      </p>
+        {{-- Glow --}}
+        <div class="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-fuchsia-500/5 to-cyan-500/5"></div>
 
-      <p class="text-white">
-        {{ $name ?: 'Community name...' }}
-      </p>
+        <div class="relative z-10 flex flex-col gap-6">
 
-      <p class="text-gray-400">
-        {{ $description ?: 'Description...' }}
-      </p>
+            {{-- Header --}}
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight text-violet-300">
+                    Create Community
+                </h2>
 
-      @if($tags)
-        <p class="text-gray-500 mt-1">
-          #{{ str_replace(',', ' #', $tags) }}
-        </p>
-      @endif
-    </div>
+                <p class="mt-1 text-sm text-zinc-400">
+                    Build your own space for players, creators and fans.
+                </p>
+            </div>
 
-    <!-- BUTTON -->
-    <button type="submit"
-            class="bg-[#6246ea] hover:bg-[#7c5cff] transition
-                   px-4 py-2 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#8b5cf6] transition duration-300">
-      Create Community
-    </button>
+            {{-- Success --}}
+            @if (session()->has('success'))
+                <div class="rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-  </form>
+            {{-- NAME --}}
+            <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                    Community Name
+                </label>
 
+                <input
+                    type="text"
+                    wire:model.live="name"
+                    placeholder="Ex: Indie Gamers Hub"
+                    class="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-violet-500/40 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                >
+
+                @error('name')
+                    <span class="text-xs text-red-400">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- DESCRIPTION --}}
+            <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                    Description
+                </label>
+
+                <textarea
+                    wire:model.live="description"
+                    placeholder="What's your community about?"
+                    class="h-32 w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-violet-500/40 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                ></textarea>
+
+                @error('description')
+                    <span class="text-xs text-red-400">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- VISIBILITY + GAME --}}
+            <div class="grid gap-4 md:grid-cols-2">
+
+                {{-- Visibility --}}
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                        Visibility
+                    </label>
+
+                    <select
+                        wire:model="visibility"
+                        class="rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white focus:border-violet-500/40 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                    >
+                        <option value="public">🌍 Public</option>
+                        <option value="private">🔒 Private</option>
+                    </select>
+
+                    @error('visibility')
+                        <span class="text-xs text-red-400">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Game --}}
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                        Related Game
+                    </label>
+
+                    <select
+                        wire:model="game_id"
+                        class="rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white focus:border-violet-500/40 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                    >
+                        <option value="">None</option>
+
+                        @foreach($games as $game)
+                            <option value="{{ $game->id }}">
+                                {{ $game->name }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('game_id')
+                        <span class="text-xs text-red-400">{{ $message }}</span>
+                    @enderror
+                </div>
+
+            </div>
+
+            {{-- TAGS --}}
+            <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                    Tags
+                </label>
+
+                <input
+                    type="text"
+                    wire:model.live="tags"
+                    placeholder="gaming, indie, chill"
+                    class="w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:border-violet-500/40 focus:outline-none focus:ring-2 focus:ring-violet-500/30"
+                >
+
+                <p class="text-xs text-zinc-500">
+                    Separate tags with commas.
+                </p>
+
+                @error('tags')
+                    <span class="text-xs text-red-400">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- IMAGE --}}
+            <div class="flex flex-col gap-2">
+                <label class="text-xs font-medium uppercase tracking-wide text-zinc-400">
+                    Community Banner
+                </label>
+
+                <input
+                    type="file"
+                    wire:model="image"
+                    class="rounded-xl border border-dashed border-white/10 bg-black/20 px-4 py-6 text-sm text-zinc-400 file:mr-4 file:rounded-lg file:border-0 file:bg-violet-500/20 file:px-4 file:py-2 file:text-violet-200 hover:file:bg-violet-500/30"
+                >
+
+                @error('image')
+                    <span class="text-xs text-red-400">{{ $message }}</span>
+                @enderror
+
+                {{-- Preview --}}
+                @if ($image)
+                    <div class="mt-3 overflow-hidden rounded-2xl border border-white/10">
+                        <img
+                            src="{{ $image->temporaryUrl() }}"
+                            alt="Preview"
+                            class="h-52 w-full object-cover"
+                        >
+                    </div>
+                @endif
+            </div>
+
+            {{-- LIVE PREVIEW --}}
+            <div class="rounded-2xl border border-white/10 bg-black/30 p-5">
+                <div class="flex items-start justify-between gap-3">
+
+                    <div>
+                        <p class="text-lg font-semibold text-violet-300">
+                            {{ $name ?: 'Community name...' }}
+                        </p>
+
+                        <p class="mt-1 text-sm text-zinc-400">
+                            {{ $description ?: 'Your community description will appear here...' }}
+                        </p>
+                    </div>
+
+                    <span class="rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200">
+                        {{ ucfirst($visibility) }}
+                    </span>
+                </div>
+
+                
+            </div>
+
+            {{-- BUTTON --}}
+            <button
+                type="submit"
+                class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-violet-900/30 transition duration-300 hover:scale-[1.01] hover:from-violet-500 hover:to-fuchsia-500"
+            >
+                <span class="relative z-10">
+                    Create Community
+                </span>
+
+                <div class="absolute inset-0 bg-white/10 opacity-0 transition duration-300 group-hover:opacity-100"></div>
+            </button>
+
+        </div>
+    </form>
 </div>

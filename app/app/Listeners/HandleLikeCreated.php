@@ -28,7 +28,7 @@ class HandleLikeCreated
         if ($user->userStat) {
           $user->userStat->increment('likes');
         }
-
+        
         app(\App\Services\AchievementService::class)->check($user, 'likes_received');
     }
 }

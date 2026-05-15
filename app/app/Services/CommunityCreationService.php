@@ -16,12 +16,12 @@ class CommunityCreationService
         //
     }
 
-    public function checkCooldown(User $user): void
+    private function checkCooldown(User $user): void
     {
       if (
         $user->ownedCommunities()->where('created_at', '>=', now()->subDays(7))->exists()
       ) {
-        abort(403, 'Cooldown active');
+        abort(403, 'Cooldown active (7 days)');
       }
     }
 
@@ -45,19 +45,10 @@ class CommunityCreationService
     {
       if (
         $user->level < 10 ||
-        $user->reputation < 10 ||
+        $user->reputation < 100 ||
         $user->achievement_level < 5
       ) {
         throw new \DomainException('COMMUNITY_LOCKED');
-      }
-    }
-
-    private function checkCooldown(User $user): void
-    {
-      if (
-        $user->ownedCommunities()->where('created_at', '>=', now()->subDays(7))->exists()
-      ) {
-        abort(403, 'Cooldown active (7 days)');
       }
     }
 }

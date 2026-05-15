@@ -33,4 +33,9 @@ class Post extends Model
     {
       return $this->belongsToMany(Tag::class, 'post_tags', 'tag_id', 'post_id');
     }
+
+    public function community()
+    {
+      return $this->belongsToMany(Community::class, 'community_posts');
+    }
 }
