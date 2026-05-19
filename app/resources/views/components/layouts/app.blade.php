@@ -39,6 +39,7 @@
             Logout
         </button>
       </form>
+      
     </nav>
 
   </div>

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -14,6 +15,7 @@ class AuthController extends Controller
     {
       return view('auth');
     }
+
 
     public function login(Request $request)
     {
@@ -45,7 +47,7 @@ class AuthController extends Controller
         'name' => 'required|string|max:255',
         'username' => 'required|string|max:255|unique:users,username',
         'email' => 'required|email|max:255',
-        'password' => 'required|string|max:8|confirmed',
+        'password' => 'required|string|min:8|confirmed',
       ]);
       
       $user = User::create([
@@ -53,10 +55,15 @@ class AuthController extends Controller
         'username' => $request->username,
         'email' => $request->email,
         'password' => Hash::make($request->password),
-        ]);
+      ]);
+
+      Mail::send('email-welcome', ['user' => $user], function ($message) use ($user) {
+        $message->to($user->email)
+                ->subject('Welcome To The Community Where You Can Increment Your Reputation');
+      });
         
-        Auth::login($user);
-        
-        return redirect()->route('home')->with('message', 'User created successfully.');
+      Auth::login($user);
+      
+      return redirect()->route('home')->with('message', 'User created successfully.');
     }
 }
