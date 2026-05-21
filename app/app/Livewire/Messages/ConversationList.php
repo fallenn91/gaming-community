@@ -4,6 +4,7 @@ namespace App\Livewire\Messages;
 
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use App\Models\User;
 use App\Models\Message;
 
@@ -31,7 +32,8 @@ class ConversationList extends Component
         $this->dispatch('refresh');
     }
 
-    public function getAuthIdProperty(): int
+    #[Computed]
+    public function authId(): int
     {
         return auth()->id();
     }

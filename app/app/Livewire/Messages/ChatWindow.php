@@ -53,18 +53,21 @@ class ChatWindow extends Component
         $this->dispatch('$refresh');
     }
 
-    #[On('echo-private:chat.{authId},MessageSent')]
-    public function receiveMessage(array $message): void 
+    #[Computed]
+    public function authId(): int
     {
+        return auth()->id();
+    }
+
+    #[On('echo-private:chat.{authId},MessageSent')]
+    public function receiveMessage($payload): void 
+    {
+        $message = is_array($payload) && isset($payload['message']) ? $payload['message'] : $payload;
+
         if ((int) $message['sender_id'] === $this->recipient->id) {
             $this->dispatch('$refresh');
             $this->markAsRead();
         }
-    }
-
-    public function getAuthIdProperty(): int
-    {
-        return auth()->id();
     }
 
     private function markAsRead(): void
