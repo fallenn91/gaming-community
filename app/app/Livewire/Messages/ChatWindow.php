@@ -35,7 +35,6 @@ class ChatWindow extends Component
 
     public function sendMessage(): void
     {
-        $this->validate(['newMessage' => 'required|string|max:1000']);
 
         $message = Message::create([
             'sender_id' => auth()->id(),
