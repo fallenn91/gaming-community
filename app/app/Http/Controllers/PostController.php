@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -26,7 +27,7 @@ class PostController extends Controller
 
         $path = null;
 
-        if ($request->has('image')) {
+        if ($request->hasFile('image')) {
           $path = $request->file('image')->store('posts', 'public');
         }
 
@@ -55,6 +56,7 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         $post = Post::findOrFail($id);
+        $this->authorize('update', $post);
         $post->update($request->only('content'));
         return redirect()->back()->with('success', 'Post updated successfully!');
     }
@@ -65,6 +67,7 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
+        $this->authorize('delete', $post);
         $post->delete();
         return redirect()->back()->with('success', 'Post deleted successfully!');
     }

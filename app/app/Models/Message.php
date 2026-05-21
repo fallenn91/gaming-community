@@ -12,7 +12,11 @@ class Message extends Model
       'content',
       'status',
       'read_at',
-      'create_at',
+      'created_at',
+    ];
+
+    protected $casts = [
+      'read_at' => 'datetime',
     ];
 
     public function sender()
@@ -23,5 +27,16 @@ class Message extends Model
     public function receiver()
     {
       return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    public static function conversation(int $userA, int $userB)
+    {
+      return static::where(function ($q) use ($userA, $userB) {
+        $q->where('sender_id', $userA)
+        ->where('receiver_id', $userB);
+      })->orWhere(function ($q) use ($userA, $userB) {
+        $q->where('sender_id', $userB)
+        ->where('receiver_id', $userA);
+      })->oldest();
     }
 }

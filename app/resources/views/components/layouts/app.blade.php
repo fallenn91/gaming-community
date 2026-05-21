@@ -32,6 +32,7 @@
       <a class="hover:text-[#a78bfa]" href="{{ route('home')}}">Home</a>
       <a class="hover:text-[#a78bfa]" href="{{ route('explore')}}">Explore</a>
       <a class="hover:text-[#a78bfa]" href="{{ route('community')}}">Communities</a>
+      <a class="hover:text-[#a78bfa]" href="{{ route('messages.index')}}">Chat</a>
       <a class="hover:text-[#a78bfa]" href="{{ route('profile', auth()->user()) }}">Profile</a>
       <form method="POST" action="{{ route('logout') }}">
         @csrf

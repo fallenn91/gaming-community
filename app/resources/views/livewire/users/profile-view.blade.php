@@ -52,12 +52,12 @@
         @if (auth()->id() !== $user->id)
         <div class="flex gap-3 mt-4 mb-4">
           <livewire:interactions.follow-button :user="$user" wire:key="follow-{{ $user->id }}" /> 
-          <button class="px-4 py-1.5 rounded-full text-sm transition"
+          <a href="{{ route('messages.show', $user) }}" class="px-4 py-1.5 rounded-full text-sm transition"
                   style="border: 1px solid rgba(139,92,246,0.4); color: #ddd6fe; background: rgba(139,92,246,0.08);"
                   onmouseover="this.style.borderColor='rgba(139,92,246,0.8)'"
                   onmouseout="this.style.borderColor='rgba(139,92,246,0.4)'">
             Message
-          </button>
+        </a>
         </div>
         @endif
       </div>

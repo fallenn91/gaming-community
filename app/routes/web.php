@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Livewire\Users\ProfileView;
 use App\Livewire\Games\GameSearch;
@@ -29,6 +30,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/games/{slug}', GameSearch::class);
     Route::get('/my-library', GameLibrary::class)->name('library');
+
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{recipient}', [MessageController::class, 'show'])->name('messages.show');
 });
 
 Route::middleware('guest')->group(function () {
