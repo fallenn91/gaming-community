@@ -57,13 +57,11 @@ class AuthController extends Controller
         'password' => Hash::make($request->password),
       ]);
 
-      Mail::send('email-welcome', ['user' => $user], function ($message) use ($user) {
-        $message->to($user->email)
-                ->subject('Welcome To The Community Where You Can Increment Your Reputation');
-      });
-        
+              
       Auth::login($user);
+
+      $user->sendEmailVerificationNotification();
       
-      return redirect()->route('home')->with('message', 'User created successfully.');
+      return redirect()->route('verification.notice');
     }
 }

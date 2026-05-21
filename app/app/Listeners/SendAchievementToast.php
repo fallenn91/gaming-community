@@ -21,7 +21,7 @@ class SendAchievementToast
      */
     public function handle(AchievementUnlocked $event): void
     {
-        \Livewire\Livewire::dispatch('achievementUnlocked', [
+        \Livewire\Livewire::dispatch('AchievementUnlocked', [
             'name' => $event->achievement->name,
             'xp' => $event->achievement->xp_reward,
         ]);

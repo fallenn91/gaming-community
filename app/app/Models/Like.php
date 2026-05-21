@@ -20,4 +20,9 @@ class Like extends Model
     {
       return $this->belongsTo(Post::class);
     }
+
+    public function community()
+    {
+      return $this->belongsTo(Community::class);
+    }
 }

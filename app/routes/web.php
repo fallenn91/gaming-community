@@ -13,11 +13,10 @@ use App\Livewire\Communities\CommunityShow;
 use App\Livewire\Communities\CommunityCreate;
 use App\Livewire\ExplorePage;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Auth;
 
-Route::middleware('auth')->group(function () {
-    Route::get('/email/verify', [EmailVerificationController::class, 'index'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
-    Route::get('/email/verify-notification', [EmailVerificationController::class, 'resend'])->middleware('throttle:6,1')->name('verification.send');
+
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/profile/{user}', ProfileView::class)->name('profile');
     
@@ -42,4 +41,16 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
+Route::get('/email/verify', [EmailVerificationController::class, 'index'])
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
 

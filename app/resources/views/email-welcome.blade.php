@@ -74,13 +74,21 @@
            ">
         <h1 class="text-4xl font-bold text-[#ddd6fe] tracking-widest"
             style="text-shadow: 0 0 24px #a78bfa, 0 0 60px rgba(139,92,246,0.4);">
-          Welcome {{ $user->name }}
+          Email Verified
         </h1>
         <p class="text-[#e5e7eb] text-xl mt-2 max-w-xl mx-auto">
-          Thank You for joining
+          Welcome back, <span class="font-semibold text-white">{{ $user->name }}</span>. Your account is now verified.
         </p>
+
+        <form action="{{ route('home') }}" method="GET" class="mt-8">
+          <button type="submit"
+                  class="px-8 py-4 rounded-full bg-[#6246ea] text-white text-lg hover:bg-[#4f3bd6] hover:shadow-lg transition duration-300">
+            Go to dashboard
+          </button>
+        </form>
+
         <p class="text-gray-400 text-sm mt-4">
-          👾 12,340 players already have joined
+          Start exploring communities and gaming content now.
         </p>
       </div>
     </section>

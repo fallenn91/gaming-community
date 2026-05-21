@@ -77,23 +77,33 @@
           Verify Your Email
         </h1>
         <p class="text-[#e5e7eb] text-xl mt-2 max-w-xl mx-auto">
-          Please, confirm your email
+          We sent a verification link to <span class="font-semibold text-white">{{ $email }}</span>. Please check your inbox and spam folder.
         </p>
 
         @if (session('message'))
           <p class="text-[#d946ef] text-sm mt-3">
-            No passive scrolling. Every post gives you XP.
+            {{ session('message') }}
           </p>
         @endif
-        <form action="{{ route('verification.send') }}" method="POST">
+
+        <form action="{{ route('verification.send') }}" method="POST" class="flex flex-col gap-3 items-center">
           @csrf
-          <button type="submit" class="px-8 py-4 rounded-full bg-[#6246ea] text-white text-lg hover:bg-[#4f3bd6] hover:shadow-lg transition duration-300 cursor-pointer  min-w-[200px] max-w-xs">
-          Confirm Email
+          <button type="submit" class="px-8 py-4 rounded-full bg-[#6246ea] text-white text-lg hover:bg-[#4f3bd6] hover:shadow-lg transition duration-300 cursor-pointer min-w-[200px] max-w-xs">
+            Resend verification email
           </button>
+          <a href="{{ route('logout') }}"
+             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+             class="text-sm text-gray-400 hover:text-white transition">
+            Use a different email or sign out
+          </a>
         </form>
-        
+
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+          @csrf
+        </form>
+
         <p class="text-gray-400 text-sm mt-4">
-          👾 12,340 players already have confirm
+          If you don't receive the email, wait a few minutes or request another one.
         </p>
       </div>
     </section>

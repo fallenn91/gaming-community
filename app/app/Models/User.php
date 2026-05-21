@@ -161,9 +161,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
       return $this->hasMany(Community::class, 'owner_id');
     }
-
-    public function sendEmailVerificationNotification()
-    {
-      $this->notify(new CustomVerifyEmail());
-    }
 }
