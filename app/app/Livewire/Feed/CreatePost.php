@@ -32,8 +32,7 @@ class CreatePost extends Component
        $imagePath = null;
 
       if ($this->image) {
-        $filename = time() . '.' . $request->image->extension();
-        $imagePath = $this->image->storeAs('PostImage', $filename, 'public');
+        $imagePath = $this->image->store('PostImage', 'public');
       }
 
       $post = Post::create([

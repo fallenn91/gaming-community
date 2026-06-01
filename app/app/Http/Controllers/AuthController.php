@@ -24,8 +24,6 @@ class AuthController extends Controller
         'password' => 'required|string|min:8',
       ]);
 
-      $user = User::where('email', $request->email)->first();
-
       if (!Auth::attempt($request->only('email', 'password'))) {
         return back()->with('error', 'Invalid credentials.');
       }

@@ -28,7 +28,7 @@ class PostFeed extends Component
 
     public function render()
     {
-      $query = Post::with('user');
+      $query = Post::with(['user', 'likes', 'comments', 'tags']);
 
       if ($this->user && !is_array($this->user) && $this->user instanceof User) {
         $query->where('user_id', $this->user->id);

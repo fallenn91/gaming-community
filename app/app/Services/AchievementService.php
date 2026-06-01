@@ -6,6 +6,15 @@ use App\Models\UserAchievement;
 
 class AchievementService
 {
+    $stats = [
+        'posts' => $user->posts()->count(),
+        'comments' => $user->comments()->count(),
+        'follows' => $user->following()->count(),
+        'followers_received' => $user->followers()->count(),
+        'reputation' => $user->reputation,
+        'likes_received' =>
+            $user->posts()->withCount('likes')->get()->sum('likes_count'),
+    ];
     /**
      * Create a new class instance.
      */
@@ -44,22 +53,6 @@ class AchievementService
 
     private function meetsCondition($user, $achievement)
     {
-        return match ($achievement->type) {
-
-            'posts' => $user->posts()->count() >= $achievement->threshold,
-
-            'comments' => $user->comments()->count() >= $achievement->threshold,
-
-            'follows' => $user->following()->count() >= $achievement->threshold,
-
-            'followers_received' => $user->followers()->count() >= $achievement->threshold,
-
-            'reputation' => $user->reputation >= $achievement->threshold,
-
-            'likes_received' =>
-                $user->posts()->withCount('likes')->get()->sum('likes_count') >= $achievement->threshold,
-
-            default => false,
-        };
+        return ($stats[$achievement->type] ?? 0) >= $achievement->threshold;
     }
 }

@@ -11,6 +11,8 @@ class FollowButton extends Component
 {
     public $user;
     public bool $isFollowing = false;
+    public int $followersCount = 0;
+    public int $followingCount = 0;
 
     public function mount(User $user)
     {

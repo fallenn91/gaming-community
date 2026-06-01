@@ -33,7 +33,7 @@ class Post extends Model
 
     public function tags()
     {
-      return $this->belongsToMany(Tag::class, 'post_tags', 'tag_id', 'post_id');
+      return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id');
     }
 
     public function community()

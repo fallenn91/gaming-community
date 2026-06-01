@@ -147,11 +147,6 @@ class User extends Authenticatable implements MustVerifyEmail
         ->withPivot('unlocked_at');
     }
 
-    public function getAchievementLevelAttribute(): int
-    {
-      return (int) floor(sqrt($this->xp / 100));
-    }
-
     public function communities()
     {
       return $this->belongsToMany(Community::class)->withPivot('role')->withTimestamps();

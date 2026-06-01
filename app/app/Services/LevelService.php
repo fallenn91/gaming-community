@@ -20,7 +20,7 @@ class LevelService
 
       $newLevel = floor($user->xp / 100) + 1;
 
-      if ($newLevel >= $oldLevel) {
+      if ($newLevel <= $oldLevel) {
         return;
       }
 
