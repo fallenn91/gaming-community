@@ -22,6 +22,6 @@ class CheckCommunityUnlock
      */
     public function handle(UserLevelUp $event): void
     {
-        app(CommunityUnlockService::class)->evaluate(event(new CommunityUnlocked($event->user)));
+        app(CommunityUnlockService::class)->evaluate($event->user);
     }
 }

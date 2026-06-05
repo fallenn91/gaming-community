@@ -6,13 +6,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\PostCreated;
 use App\Services\AchievementService;
+use App\Services\XpService;
 
-class HandlePostCreated
+class HandlePostCreated implements ShouldQueue
 {
+    use InteractsWithQueue;
+    public string $queue = 'xp';
     /**
      * Create the event listener.
      */
-    public function __construct()
+    public function __construct(private XpService $xpService)
     {
         //
     }
@@ -24,7 +27,7 @@ class HandlePostCreated
     {
         $user = $event->post->user;
 
-        $user->increment('xp', 10);
+        $this->xpService->award($user, 10, 'Post created');
 
         if ($user->userStat) {
           $user->userStat->increment('posts');

@@ -41,15 +41,24 @@ class LikeButton extends Component
 
     public function toggleLike()
     {
-      $like = $this->post->likes()->create([
-        'user_id' => auth()->id(),
-      ]);
-      
-      event(new \App\Events\LikeCreated($like));
+      if ($this->hasLiked) {
 
-      $this->post->user->increment('xp', 2);
-      
-      $this->loadLikes();
-      $this->dispatch('likeUpdated');
+        $like = $this->post->likes()->where('user_id', auth()-id())->first();
+        
+        if ($like) {
+          $like->delete();
+          $this->loadLikes();
+          return;
+        }
+
+        $like = $this->post->likes()->create([
+          'user_id' => auth()->id(),
+        ]);
+        
+        event(new \App\Events\LikeCreated($like));
+        
+        $this->loadLikes();
+        $this->dispatch('likeUpdated');
+      }
     }
 }

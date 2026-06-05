@@ -33,6 +33,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{recipient}', [MessageController::class, 'show'])->name('messages.show');
+
+    // routes/web.php — dentro del grupo auth
+    Route::get('/games/search', [GameController::class, 'search'])->name('games.search');
+    Route::get('/games/popular', [GameController::class, 'popular'])->name('games.popular');
+    Route::get('/games/{igdbId}', [GameController::class, 'show'])->name('games.show');
 });
 
 Route::middleware('guest')->group(function () {

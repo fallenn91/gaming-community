@@ -6,8 +6,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\UserUnfollowed;
 
-class HandleUnfollow
+class HandleUnfollow implements ShouldQueue
 {
+    use InteractsWithQueue;
+    public string $queue = 'xp';
     /**
      * Create the event listener.
      */

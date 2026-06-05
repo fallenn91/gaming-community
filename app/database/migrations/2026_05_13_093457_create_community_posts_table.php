@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('community_posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('community_id')->constrained('communities')->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained('posts')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('context');
             $table->string('image')->nullable();

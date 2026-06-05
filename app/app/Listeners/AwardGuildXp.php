@@ -28,18 +28,18 @@ class AwardGuildXp
       // Devuelve un valor
       // Usa comparación estricta ===
       [$community, $user, $xp, $source] = match (true) {
-        $event instanceof PostCreate => [
-          $event->post->community()->first(), // Devuelve colección, no un objeto
+        $event instanceof PostCreated => [
+          $event->post->communityPosts()->first()?->community, // Devuelve colección, no un objeto
           $event->post->user,
           15, 'post'
         ],
         $event instanceof LikeCreated => [
-          $event->like->community()->first(),
+          $event->like->post->community,
           $event->like->user,
           2, 'like'
         ],
         $event instanceof CommentCreated => [
-          $event->comment->community()->first(),
+          $event->comment->post->community,
           $event->comment->user,
           2, 'comment'
         ],

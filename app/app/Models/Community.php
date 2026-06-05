@@ -37,11 +37,11 @@ class Community extends Model
 
     public function posts()
     {
-      return $this->hasMany(CommunityPost::class);
+      return $this->belongsToMany(CommunityPost::class);
     }
 
-    public function members()
+    public function communityPosts()
     {
-      return $this->belongsToMany(User::class)->withPivot('role')->withTimestamps();
+      return $this->hasMany(CommunityPost::class);
     }
 }

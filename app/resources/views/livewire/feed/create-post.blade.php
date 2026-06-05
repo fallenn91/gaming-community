@@ -18,11 +18,6 @@
 
   <div class="flex justify-between items-center mt-3">
 
-    <div class="text-xs text-gray-400 flex gap-2">
-      <span>+ Image</span>
-      <span>+ tag</span>
-    </div>
-
     <button type="submit" class="bg-[#6246ea] px-4 py-2 rounded-full cursor-pointer hover:bg-[#8b5cf6] transition duration-300">
       Post
     </button>

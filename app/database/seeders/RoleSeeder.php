@@ -14,19 +14,22 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['name' => 'Admin'],
-            ['name' => 'Moderator'],
-            ['name' => 'Gamer'],
-            ['name' => 'Streamer'],
-            ['name' => 'Content Creator'],
-            ['name' => 'Clan Leader'],
-            ['name' => 'Member'],
-            ['name' => 'Guest'],
-            ['name' => 'Banned'],
+            ['id' => 1, 'name' => 'Admin'],
+            ['id' => 2, 'name' => 'Moderator'],
+            ['id' => 3, 'name' => 'Gamer'],
+            ['id' => 4, 'name' => 'Streamer'],
+            ['id' => 5, 'name' => 'Content Creator'],
+            ['id' => 6, 'name' => 'Clan Leader'],
+            ['id' => 7, 'name' => 'Member'],
+            ['id' => 8, 'name' => 'Guest'],
+            ['id' => 9, 'name' => 'Banned'],
         ];
 
         foreach ($roles as $role) {
-            Role::firstOrCreate($role);
+            Role::updateOrCreate(
+                ['id' => $role['id']],
+                ['name' => $role['name']]
+            );
         }
     }
 }

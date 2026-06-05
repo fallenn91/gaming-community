@@ -44,6 +44,6 @@ class CommunityXpService
 
     private function xpForNextLevel(int $level): int
     {
-      return ($level * $level) * 200;
+      return max(200, ($level * $level) * 200);
     }
 }

@@ -33,28 +33,6 @@
     </div>
   </div>
 
-  {{-- QUICK ACTIONS --}}
-  <div class="flex gap-2 text-xs">
-    <button class="px-3 py-1 rounded transition"
-            style="background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.35); color: var(--primary-light);"
-            onmouseover="this.style.background='rgba(139,92,246,0.3)'"
-            onmouseout="this.style.background='rgba(139,92,246,0.15)'">
-      🎮 Find match
-    </button>
-    <button class="px-3 py-1 rounded transition"
-            style="background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.35); color: var(--primary-light);"
-            onmouseover="this.style.background='rgba(139,92,246,0.3)'"
-            onmouseout="this.style.background='rgba(139,92,246,0.15)'">
-      👥 Find teammates
-    </button>
-    <button class="px-3 py-1 rounded transition"
-            style="background: rgba(217,70,239,0.15); border: 1px solid rgba(217,70,239,0.35); color: #f0abfc;"
-            onmouseover="this.style.background='rgba(217,70,239,0.3)'"
-            onmouseout="this.style.background='rgba(217,70,239,0.15)'">
-      📢 Create post
-    </button>
-  </div>
-
   {{-- PLAY TODAY --}}
   <div class="rounded-xl p-4"
        style="background: var(--fondo-card); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.3);">

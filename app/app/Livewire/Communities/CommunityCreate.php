@@ -6,9 +6,12 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use App\Models\Game;
 use App\Services\CommunityCreationService;
+use Livewire\WithFileUploads;
 
 class CommunityCreate extends Component
 {
+    use WithFileUploads;
+    
     public string $name = '';
     public string $description = '';
     public ?int $game_id = null;

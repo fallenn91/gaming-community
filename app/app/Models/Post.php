@@ -36,8 +36,8 @@ class Post extends Model
       return $this->belongsToMany(Tag::class, 'post_tags', 'post_id', 'tag_id');
     }
 
-    public function community()
+    public function communityPosts()
     {
-      return $this->belongsToMany(Community::class, 'community_posts');
+      return $this->hasMany(CommunityPost::class);
     }
 }

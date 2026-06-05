@@ -5,13 +5,17 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\CommentCreated;
+use App\Services\XpService;
+use App\Services\AchievementService;
 
-class HandleCommentCreated
+class HandleCommentCreated implements ShouldQueue
 {
+    use InteractsWithQueue;
+    public string $queue = 'xp';
     /**
      * Create the event listener.
      */
-    public function __construct()
+    public function __construct(private XpService $xpService)
     {
         //
     }
@@ -23,7 +27,7 @@ class HandleCommentCreated
     {
         $user = $event->comment->user;
 
-        $user->increment('xp', 5);
+        $this->xpService->award($user, 5, 'Comment created');
 
         if ($user->userStat) {
           $user->userStat->increment('comments');

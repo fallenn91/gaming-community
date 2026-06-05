@@ -5,13 +5,17 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\LikeCreated;
+use App\Services\XpService;
+use App\Services\AchievementService;
 
-class HandleLikeCreated
+class HandleLikeCreated implements ShouldQueue
 {
+    use InteractsWithQueue;
+    public string $queue = 'xp';
     /**
      * Create the event listener.
      */
-    public function __construct()
+    public function __construct(private XpService $xpService)
     {
         //
     }
@@ -23,7 +27,7 @@ class HandleLikeCreated
     {
         $user = $event->like->post->user;
 
-        $user->increment('xp', 2);
+        $this->xpService->award($user, 2, 'Like created');
 
         if ($user->userStat) {
           $user->userStat->increment('likes');

@@ -7,13 +7,17 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Models\FollowReward;
 use App\Services\LevelService;
 use App\Events\UserFollowed;
+use App\Services\AchievementService;
+use App\Services\XpService;
 
-class HandleFollow
+class HandleFollow implements ShouldQueue
 {
+    use InteractsWithQueue;
+    public string $queue = 'xp';
     /**
      * Create the event listener.
      */
-    public function __construct()
+    public function __construct(private XpService $xpService, private AchievementService $achievementService)
     {
         //
     }
@@ -36,7 +40,7 @@ class HandleFollow
         
         // Reputación siempre
         if ($reward->wasRecentlyCreated) {
-            $follower->increment('xp', 2);
+            $this->xpService->award($follower, 2, 'Followed ' . $followed->username);
         }
 
         $followed->increment('reputation', 1);
@@ -45,15 +49,9 @@ class HandleFollow
         $follower->increment('following_count');
 
         $followed->increment('followers_count');
-
-        // Level System
-        app(LevelService::class)->checkLevelUp($follower);
-
-        // Achievements
-        $achievementService = app( \App\Services\AchievementService::class);
         
-        $achievementService->check($follower, 'follows');
+        $this->achievementService->check($follower, 'follows');
 
-        $achievementService->check($followed, 'followers_received');
+        $this->$achievementService->check($followed, 'followers_received');
     }
 }

@@ -15,7 +15,7 @@ class Game extends Model
       'created_at',
     ];
 
-    public function user()
+    public function users()
     {
       return $this->belongsToMany(User::class, 'user_games')->withPivot('status', 'hours_played')->withTimestamps();
     }

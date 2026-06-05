@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\Post;
 
 class PostCreated
 {
@@ -17,7 +18,7 @@ class PostCreated
     /**
      * Create a new event instance.
      */
-    public function __construct($post)
+    public function __construct(Post $post)
     {
         $this->post = $post;
     }

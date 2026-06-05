@@ -43,12 +43,16 @@ class CommunityCreationService
 
     private function checkPermissions(User $user): void
     {
+      dd($user->is_admin);
+      if ((bool) $user->is_admin) {
+        return;
+      }
       if (
         $user->level < 10 ||
         $user->reputation < 100 ||
         $user->achievement_level < 5
       ) {
-        throw new \DomainException('COMMUNITY_LOCKED');
+        abort(403, 'You do not meet the requirements to create a community.');
       }
     }
 }

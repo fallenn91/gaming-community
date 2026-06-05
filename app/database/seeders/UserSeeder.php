@@ -18,17 +18,21 @@ class UserSeeder extends Seeder
         $admin = User::create([
         'name' => 'Admin',
         'username' => 'admin',
+        'role_id' => 1,
         'email' => 'admin@test.com',
         'password' => Hash::make('password'),
+        'reputation' => 9999,
         'level' => 999,
         'xp' => 9999,
         'bio' => 'Administrador de la comunidad',
         'is_online' => true,
+        'email_verified_at' => now(),
       ]);
 
       User::create([
           'name' => 'Player One',
           'username' => 'player1',
+          'role_id' => 3,
           'email' => 'player1@test.com',
           'password' => Hash::make('password'),
           'level' => 5,
@@ -40,6 +44,7 @@ class UserSeeder extends Seeder
       User::create([
           'name' => 'Gamer Girl',
           'username' => 'ggirl',
+          'role_id' => 3,
           'email' => 'ggirl@test.com',
           'password' => Hash::make('password'),
           'level' => 7,
