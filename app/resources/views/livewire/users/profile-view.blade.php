@@ -43,6 +43,9 @@
         <p class="text-xs mt-0.5" style="color: rgba(217,70,239,0.8);">
           Lv.{{ $user->level ?? 1 }} • {{ $user->xp ?? 0 }} XP
         </p>
+        <p class="text-xs mt-0.5" style="color: rgba(217,70,239,0.8);">
+          {{ $user->reputation ?? 0 }} Reputation
+        </p>
 
         <p class="text-sm mt-2" style="color: rgba(221,214,254,0.55);">
           {{ $user->bio ?? 'FPS player • Indie dev • Night grinder ⚡' }}
@@ -124,6 +127,7 @@
             </div>
           </div>
       @endif
+      
     {{-- POSTS --}}
       <livewire:feed.post-feed :user="$user"/>
   </div>

@@ -58,11 +58,15 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'is_admin' => 'boolean',
             'email_verified_at' => 'datetime',
             'last_seen' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role_id === 1;
     }
 
     public function role()

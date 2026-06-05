@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         'role_id' => 1,
         'email' => 'admin@test.com',
         'password' => Hash::make('password'),
-        'reputation' => 9999,
+        'reputation' => 999,
         'level' => 999,
         'xp' => 9999,
         'bio' => 'Administrador de la comunidad',
