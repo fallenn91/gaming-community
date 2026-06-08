@@ -22,7 +22,7 @@ class AchievementServiceTest extends TestCase
     {
       parent::setUp();
       $this->service = app(AchievementService::class);
-      $this->user = User::factory()->create(['xp' => 1]);
+      $this->user = User::factory()->create(['xp' => 0]);
     }
 
     /**@test */

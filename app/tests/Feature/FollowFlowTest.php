@@ -26,8 +26,8 @@ class FollowFlowTest extends TestCase
     protected function setUp(): void
     {
       parent::setUp();
-      $this->follower = User::factory()->create(['followiung_count' => 0, 'xp' => 0]);
-      $this->following = User::factory()->create(['followers_count' => 0, 'reputation' => 0]);
+      $this->follower = User::factory()->create(['following_count' => 0, 'xp' => 0]);
+      $this->followed = User::factory()->create(['followers_count' => 0, 'reputation' => 0]);
     }
 
     /**@test */

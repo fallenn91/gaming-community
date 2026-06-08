@@ -10,7 +10,7 @@ use App\Events\CommentCreated;
 use App\Services\CommunityXpService;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class AwardGuildXp implements ShouldQueue, ShouldBeUnique
+class AwardGuildXp implements ShouldQueue
 {
     use InteractsWithQueue;
 
@@ -52,10 +52,5 @@ class AwardGuildXp implements ShouldQueue, ShouldBeUnique
 
       $this->xpService->addXp($community, $xp, $user, $source);
         
-    }
-
-    public function uniqueId(): string
-    {
-      return $this->event->uniqueKey();
     }
 }

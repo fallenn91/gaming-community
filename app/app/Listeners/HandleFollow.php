@@ -9,6 +9,7 @@ use App\Services\LevelService;
 use App\Events\UserFollowed;
 use App\Services\AchievementService;
 use App\Services\XpService;
+use App\Models\Follow;
 
 class HandleFollow implements ShouldQueue
 {
