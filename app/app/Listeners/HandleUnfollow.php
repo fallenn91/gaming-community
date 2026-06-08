@@ -9,6 +9,7 @@ use App\Events\UserUnfollowed;
 class HandleUnfollow implements ShouldQueue
 {
     use InteractsWithQueue;
+
     public string $queue = 'xp';
     /**
      * Create the event listener.
@@ -27,16 +28,37 @@ class HandleUnfollow implements ShouldQueue
 
         $followed = $event->followed;
 
-        if ($followed->reputation > 0) {
-          $followed->decrement('reputation');
+        $followingExists = Follow::where('follower_id', $follower->id)
+          ->where('following_id', $followed->id)
+          ->exists();
+
+        if (!followingExists) {
+            return;
         }
 
-        if ($follower->following_count > 0) {
-          $follower->decrement('following_count');
-        }
+        \DB::table('users')
+            ->where('id', $follower->id)
+            ->where('following_count', '>', 0)
+            ->decrement('following_count');
+ 
+        \DB::table('users')
+            ->where('id', $followed->id)
+            ->where('followers_count', '>', 0)
+            ->decrement('followers_count');
+ 
+        // Reputación 
+        \DB::table('users')
+            ->where('id', $followed->id)
+            ->where('reputation', '>', 0)
+            ->decrement('reputation');
+    }
 
-        if ($followed->followers_count > 0) {
-          $followed->decrement('followers_count');
-        }
+    public function failed(UserUnfollowed $event, \Throwable $exception): void
+    {
+      \Log::error('HandleUnfollow job failed.', [
+        'follower_id' => $event->follower->id,
+        'followed_id' => $event->followed->id,
+        'error' => $exception->getMessage(),
+      ]);
     }
 }

@@ -43,7 +43,7 @@ class LikeButton extends Component
     {
       if ($this->hasLiked) {
 
-        $like = $this->post->likes()->where('user_id', auth()-id())->first();
+        $like = $this->post->likes()->where('user_id', auth()->id())->first();
         
         if ($like) {
           $like->delete();

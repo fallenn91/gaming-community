@@ -28,13 +28,16 @@ class PostFeed extends Component
 
     public function render()
     {
-      $query = Post::with(['user', 'likes', 'comments', 'tags']);
+      $query = Post::with(['likes', 'comments'])
+      ->with(['user:id,username,avatar', 'tags:id,name'])
+      ->latest()
+      ->paginate(5);
 
       if ($this->user && !is_array($this->user) && $this->user instanceof User) {
         $query->where('user_id', $this->user->id);
       }
       return view('livewire.feed.post-feed', [
-          'posts' => $query->latest()->paginate(5),
+          'posts' => $query,
       ]);
     }
 

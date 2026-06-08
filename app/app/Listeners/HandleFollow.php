@@ -31,6 +31,14 @@ class HandleFollow implements ShouldQueue
 
         $followed = $event->followed;
 
+        $followExists = Follow::where('follower_id', $follower->id)
+          ->where('following_id', $followed->id)
+          ->exists();
+
+        if (!followExists) {
+            return;
+        }
+
         $reward = FollowReward::firstOrCreate([
           'follower_id' => $follower->id,
           'followed_id' => $followed->id,
@@ -52,6 +60,15 @@ class HandleFollow implements ShouldQueue
         
         $this->achievementService->check($follower, 'follows');
 
-        $this->$achievementService->check($followed, 'followers_received');
+        $this->achievementService->check($followed, 'followers_received');
+    }
+
+    public function failed(UserFollowed $event, \Throwable $exception): void
+    {
+      \Log::error('HandleFollow job failed.', [
+        'follower_id' => $event->follower->id,
+        'followed_id' => $event->followed->id,
+        'error' => $exception->getMessage(),
+      ]);
     }
 }

@@ -44,18 +44,31 @@ class AchievementService
         }
     }
 
-    private function meetsCondition($user, $achievement)
+    private function meetsCondition($user, $achievement, array $stats): bool
     {
-        $stats = [
-            'posts' => $user->posts()->count(),
-            'comments' => $user->comments()->count(),
-            'follows' => $user->following()->count(),
-            'followers_received' => $user->followers()->count(),
-            'reputation' => $user->reputation,
-            'likes_received' =>
-                $user->posts()->withCount('likes')->get()->sum('likes_count'),
-        ];
         return ($stats[$achievement->type] ?? 0) >= $achievement->threshold;
+    }
+
+    public function check($user, string $type): void
+    {
+      $achievements = Achievement::where('type', $type)
+        ->whereNotIn('id', $user->achievements()->pluck('achievement_id'))
+        ->get();
+
+        $stats = $this->getStats($user);
+        foreach ($achievements as $achievement) {
+            if (($stats[$achievement->type] ?? 0) >= $achievement->threshold) {
+                UserAchievement::create([
+                    'user_id' => $user->id,
+                    'achievement_id' => $achievement->id,
+                    'unlocked_at' => now(),
+                ]);
+
+                $user->increment('xp', $achievement->xp_reward ?? 0);
+
+                event(new \App\Events\AchievementUnlocked($user, $achievement));
+            }
+        }
     }
 
     

@@ -5,22 +5,26 @@ namespace App\Livewire\Games;
 use Livewire\Component;
 use App\Models\Game;
 use App\Services\IgdbService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class GameSearch extends Component
 {
     public string $query = '';
     public string $results;
     public bool $loading = false;
+
     public function updatedQuery(): void
     {
-      if (strlen($this->query) < 2) {
-        $this->results = [];
-        return;
-      }
+      if (strlen($this->query) < 2) return;
 
-      $this->loading = true;
-      $this->results = app(IgdbService::class)->search($this->query);
-      $this->loading = false;
+      $cacheKey = 'igdb:search' . md5($this->query);
+      $this->results = Cache::remembter($cacheKey, 3600, function () {
+        return rescue(
+          fn() => app(IgdbService::class)->searchGames($this->query), []
+        );
+      });
     }
 
     public function render()

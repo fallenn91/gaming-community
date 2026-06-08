@@ -11,6 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
+    ->withCommands([
+      \App\Console\Commands\ReconcileFollowerCounts::class,
+    ])
     ->withMiddleware(function (Middleware $middleware): void {
         //
     })

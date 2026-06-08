@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Cache;
 
 class UpdateLastSeen
 {
@@ -20,9 +21,13 @@ class UpdateLastSeen
     {
 
        if (Auth::check()) {
-            DB::table('users')
-                ->where('id', Auth::id())
-                ->update(['last_seen' => now()]);
+            $key = 'last_seen:' . Auth::id();
+            if (!Cache::has($key)) {
+              DB::table('users')
+                  ->where('id', Auth::id())
+                  ->update(['last_seen' => now()]);
+              Cache::put($key, true, 120);
+            }
         }
         return $next($request);
     }

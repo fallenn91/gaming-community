@@ -14,7 +14,7 @@ class XpService
 
     public function award(User $user, int $amount, string $reason = ''): void
     {
-      $user->increament('xp', $amount);
+      $user->increment('xp', $amount);
       $user->refresh();
       $this->levelService->checkLevelUp($user);
     }
