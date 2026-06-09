@@ -11,6 +11,9 @@ use App\Services\AchievementService;
 use App\Services\XpService;
 use App\Notifications\NewFollowerNotification;
 
+use App\Models\Follow;
+
+
 class HandleFollow implements ShouldQueue
 {
     use InteractsWithQueue;

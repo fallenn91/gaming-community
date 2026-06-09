@@ -44,7 +44,7 @@ class LikeButtonTest extends TestCase
     {
       $this->actingAs($this->user);
 
-      $this->post->like()->create(['user_id' => $this->user->id]);
+      $this->post->likes()->create(['user_id' => $this->user->id]);
 
       Livewire::test(\App\Livewire\Interactions\LikeButton::class, ['post' => $this->post])
         ->call('toggleLike');
@@ -67,7 +67,7 @@ class LikeButtonTest extends TestCase
 
       $component->call('toggleLike'); // unlike
 
-      $this->assertCount(0, $component>get('likes') ?? []);
+      $this->assertCount(0, $component->get('likes') ?? []);
     }
 
     /**@test */

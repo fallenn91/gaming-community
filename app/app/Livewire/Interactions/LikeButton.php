@@ -4,19 +4,20 @@ namespace App\Livewire\Interactions;
 
 use Livewire\Component;
 use App\Models\Like;
+use App\Models\Post;
 
 class LikeButton extends Component
 {
-    public $post;
+    public Post $post;
     public $likes;
-    public $hasLiked = false;
+    public bool $hasLiked = false;
 
     public function render()
     {
         return view('livewire.interactions.like-button');
     }
 
-    public function mount($post)
+    public function mount(Post $post)
     {
       $this->post = $post;
       $this->loadLikes();
@@ -41,24 +42,25 @@ class LikeButton extends Component
 
     public function toggleLike()
     {
-      if ($this->hasLiked) {
+      if (! auth()->check()) {
+        return redirect('/login');
+      }
 
+      if ($this->hasLiked) {
         $like = $this->post->likes()->where('user_id', auth()->id())->first();
-        
+
         if ($like) {
           $like->delete();
-          $this->loadLikes();
-          return;
         }
-
+      } else {
         $like = $this->post->likes()->create([
           'user_id' => auth()->id(),
         ]);
-        
+
         event(new \App\Events\LikeCreated($like));
-        
-        $this->loadLikes();
-        $this->dispatch('likeUpdated');
       }
+
+      $this->loadLikes();
+      $this->dispatch('likeUpdated');
     }
 }

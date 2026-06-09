@@ -30,7 +30,7 @@ class XpServiceTest extends TestCase
       $this->xpService->award($this->user, 10, 'Test award');
 
       $this->user->refresh();
-      $this->assetEquals(10, $this->user->xp);
+      $this->assertEquals(10, $this->user->xp);
     }
 
     /**@test */
@@ -81,6 +81,6 @@ class XpServiceTest extends TestCase
 
       $this->xpService->award($this->user, 5, 'Tiny Award');
 
-      \Event::asertNotDispatched(\App\Events\UserLevelUp::class);
+      \Event::assertNotDispatched(\App\Events\UserLevelUp::class);
     }
 }
