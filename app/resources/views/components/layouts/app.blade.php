@@ -40,8 +40,10 @@
             Logout
         </button>
       </form>
-      
     </nav>
+    @auth
+      <livewire:notifications.notification-bell />
+    @endauth
 
   </div>
 </header>

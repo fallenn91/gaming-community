@@ -1,17 +1,16 @@
 <div class="space-y-1">
     
-    @forelse ($conversations as $msg)
-        @php
-            $other = $msg->sender_id === auth()->id()
-                ? $msg->receiver
-                : $msg->sender;
-            $isSent = $msg->sender_id === auth()->id();
+    @foreach ($conversations as $conversation)
+        @php 
+          $other = $conversation->user;
+          $last = $conversation->last_message;
         @endphp
+        
         <a href="{{ route('messages.show', $other) }}"
            class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5
                   transition cursor-pointer border border-transparent
                   hover:border-white/10 group">
-            
+                    
             <!-- Avatar con indicador online -->
             <div class="relative flex-shrink-0">
                 @if ($other->avatar)
@@ -33,21 +32,16 @@
                         {{ $other->username }}
                     </p>
                     <span class="text-[10px] text-gray-500 flex-shrink-0">
-                        {{ $msg->created_at->diffForHumans(short: true) }}
+                        {{ $last?->created_at->diffForHumans(short: true) }}
                     </span>
                 </div>
                 <p class="text-xs text-gray-400 truncate">
-                    @if ($isSent)
+                    @if ($last?->sender_id === auth()->id())
                         <span class="text-[#a78bfa]">You:</span>
                     @endif
-                    {{ $msg->content }}
+                    {{ $last?->content }}
                 </p>
             </div>
         </a>
-    @empty
-        <div class="text-center py-12">
-            <p class="text-sm text-gray-400">No conversations yet.</p>
-            <p class="text-xs text-gray-500 mt-1">Start a conversation to see it here</p>
-        </div>
-    @endforelse
+    @endforeach
 </div>

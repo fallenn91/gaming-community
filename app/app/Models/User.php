@@ -137,11 +137,6 @@ class User extends Authenticatable implements MustVerifyEmail
       return $this->hasMany(Message::class, 'receiver_id');
     }
 
-    public function notifications()
-    {
-      return $this->hasMany(Notification::class);
-    }
-
     public function games()
     {
       return $this->belongsToMany(Game::class, 'user_games')->withPivot('status', 'hours_played')->withTimestamps();

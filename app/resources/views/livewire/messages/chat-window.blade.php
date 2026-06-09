@@ -24,7 +24,7 @@
     <!-- Messages Container -->
     <div class="flex-1 overflow-y-auto p-4 space-y-4" id="messages-container">
 
-        @forelse ($this->messages as $msg)
+        @foreach ($this->chatMessages as $msg)
             @php $isMine = $msg['sender_id'] === auth()->id(); @endphp
 
             <div class="flex {{ $isMine ? 'justify-end' : 'justify-start' }} gap-2">
@@ -67,11 +67,8 @@
                     </div>
                 </div>
             </div>
-        @empty
-            <div class="flex items-center justify-center h-full">
-                <p class="text-sm text-gray-400">No messages yet. Start the conversation!</p>
-            </div>
-        @endforelse
+       
+        @endforeach
     </div>
 
     <!-- Input Form -->

@@ -4,17 +4,17 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\User;
 
-class LevelUpNotification extends Notification
+class NewFollowerNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public int $level)
+    public function __construct(public User $follower)
     {
         //
     }
@@ -35,9 +35,11 @@ class LevelUpNotification extends Notification
     public function toDatabase(object $notifiable): array
     {
         return [
-          'title' => '¡Level Up!',
-          'message' => "You have reached this level {$this->level}",
-          'level' => $this->level,
+          'title' => '¡New Follower!',
+          'message' => "{$this->follower->username} has started following you",
+          'follower_id' => $this->follower->id,
+          'follower_username' => $this->follower->username,
+          'follower_avatar' => $this->follower->avatar,
         ];
     }
 
@@ -49,9 +51,11 @@ class LevelUpNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'title' => '¡Level up!',
-            'message' => "You have reached this level {$this->level}",
-            'level' => $this->level,
+          'title' => '¡New Follower!',
+          'message' => "{$this->follower->username} has started following you",
+          'follower_id' => $this->follower->id,
+          'follower_username' => $this->follower->username,
+          'follower_avatar' => $this->follower->avatar,
         ];
     }
 }

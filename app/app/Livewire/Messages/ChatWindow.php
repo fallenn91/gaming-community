@@ -25,7 +25,7 @@ class ChatWindow extends Component
     }
 
     #[Computed]
-    public function messages()
+    public function chatMessages()
     {
         return Message::conversation(
             auth()->id(),
@@ -52,7 +52,6 @@ class ChatWindow extends Component
 
         $this->newMessage = '';
 
-        $this->dispatch('$refresh');
     }
 
     #[Computed]

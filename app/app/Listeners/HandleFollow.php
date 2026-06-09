@@ -9,6 +9,7 @@ use App\Services\LevelService;
 use App\Events\UserFollowed;
 use App\Services\AchievementService;
 use App\Services\XpService;
+use App\Notifications\NewFollowerNotification;
 
 class HandleFollow implements ShouldQueue
 {
@@ -57,6 +58,8 @@ class HandleFollow implements ShouldQueue
         $follower->increment('following_count');
 
         $followed->increment('followers_count');
+
+        $followed->notify(new NewFollowerNotification($follower));
         
         $this->achievementService->check($follower, 'follows');
 

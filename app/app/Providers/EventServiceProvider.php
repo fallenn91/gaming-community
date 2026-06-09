@@ -31,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
           \App\Events\UserLevelUp::class => [
               \App\Listeners\SendLevelUpToast::class,
               \App\Listeners\CheckCommunityUnlock::class,
+              \App\Listeners\SendUserLevelUpNotification::class,
           ],
         
 
