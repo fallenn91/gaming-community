@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\UserUnfollowed;
+use App\Models\Follow;
 
 class HandleUnfollow implements ShouldQueue
 {
@@ -32,7 +33,7 @@ class HandleUnfollow implements ShouldQueue
           ->where('following_id', $followed->id)
           ->exists();
 
-        if (!followingExists) {
+        if (!$followingExists) {
             return;
         }
 

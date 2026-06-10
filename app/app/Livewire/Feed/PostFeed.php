@@ -6,14 +6,17 @@ use Livewire\Component;
 use App\Models\Post;
 use App\Models\User;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Cache;
 
 class PostFeed extends Component
 {
     use WithPagination;
+
     protected $paginationTheme = 'tailwind';
     public $post;
+    public int $lastPostId = 0;
     public $user = null;
-    protected $listeners = ['likeUpdated' => '$refresh', 'postCreated' => 'refreshPosts', 'achievementUnlocked' => 'showToast'];
+    protected $listeners = ['likeUpdated' => '$refresh', 'postCreated' => 'refreshPosts', 'achievementUnlocked' => 'showToast', 'commentCountUpdated' => '$refresh'];
 
     public function mount($user = null)
     {
@@ -21,29 +24,48 @@ class PostFeed extends Component
           $this->user = $user;
       } elseif (is_numeric($user)) {
           $this->user = User::find($user);
-      } else {
-          $this->user = null;
       }
+
+      $this->lastPostId = Post::latest()->value('id') ?? 0;
     }
 
     public function render()
     {
+
       $query = Post::with(['likes', 'comments'])
       ->with(['user:id,username,avatar', 'tags:id,name'])
-      ->latest()
-      ->paginate(5);
+      ->latest();
 
-      if ($this->user && !is_array($this->user) && $this->user instanceof User) {
-        $query->where('user_id', $this->user->id);
+      if ($this->user instanceof User) {
+          $query->where('user_id', $this->user->id);
       }
+
       return view('livewire.feed.post-feed', [
-          'posts' => $query,
+          'posts' => $query->paginate(5),
       ]);
+    }
+
+    public function checkForUpdates(): void
+    {
+      $latestId = Post::latest()->value('id') ?? 0;
+
+      if ($latestId > $this->lastPostId) {
+        $this->hasNewContent = true;
+      }
+    }
+
+    public function loadNewContent(): void
+    {
+      $this->lastPostId = Post::latest()->value('id') ?? 0;
+      $this->hasNewContent = false;
+      $this->resetPage();
     }
 
     public function refreshPosts()
     {
-        $this->resetPage();
+      $this->lastPostId = Post::latest()->value('id') ?? 0;
+      $this->hasNewContent = false;
+      $this->resetPage();
     }
 
     public function paginationView()
@@ -69,7 +91,7 @@ class PostFeed extends Component
     {
       $this->dispatch('toast', [
         'message' => "🏆 Achievement desbloqueado: {$data['name']} (+{$data['xp']} XP)",
-        'type' => 'succes',
+        'type' => 'success',
       ]);
     }
     

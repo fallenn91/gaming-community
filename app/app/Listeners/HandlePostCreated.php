@@ -8,7 +8,7 @@ use App\Events\PostCreated;
 use App\Services\AchievementService;
 use App\Services\XpService;
 
-class HandlePostCreated implements ShouldQueue
+class HandlePostCreated
 {
     use InteractsWithQueue;
     public string $queue = 'xp';
@@ -28,6 +28,7 @@ class HandlePostCreated implements ShouldQueue
         $user = $event->post->user;
 
         $this->xpService->award($user, 10, 'Post created');
+        app(\App\Services\ReputationService::class)->gain($user, 'post_created');
 
         if ($user->userStat) {
           $user->userStat->increment('posts');

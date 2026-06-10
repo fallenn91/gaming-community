@@ -94,7 +94,7 @@
       <div class="flex flex-col gap-5">
         <div>
           <h3 class="text-[#a78bfa] mb-3 text-lg">{{ auth()->user()->username }}</h3>
-          <p>Lv. {{ auth()->user()->level }} • {{ auth()->user()->xp }} XP</p>
+          <livewire:users.xp-bar />
         </div>
         <div class="bg-black/20 rounded-xl p-3 border border-white/5 text-xs">
           🔔 You have 3 new interactions
@@ -134,7 +134,9 @@
     </aside>
     @endif
 </div>
-
+@auth
+  <livewire:user.presence />
+@endauth
 @livewireScripts
 </body>
 </html>

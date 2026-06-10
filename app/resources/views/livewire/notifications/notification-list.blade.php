@@ -1,7 +1,7 @@
 <div class="p-4">
     <div class="flex jusitfy-center items-center mb-3 gap-2">
-      <h3 class="font-semibold text-sm text-gray-500">Notifications</h3>
-      <button wire:click="markAllAsRead" class="text-xs text-gray-500 hover:text-gray-800">
+      <h3 class="font-semibold text-sm text-[#100828]">Notifications</h3>
+      <button wire:click="markAllAsRead" class="text-xs text-[#6246ea] hover:text-[#d946ef]">
         Mark All As Read
       </button>
     </div>
@@ -12,12 +12,12 @@
         class="flex items-start gap-3 p-2 rounded-lg cursor-pointer hover:bg-gray-50
         {{ $notification->read_at ? 'opacity-60' : 'bg-blue-50' }} ">
 
-        <div class="shrink-0 w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">
+        <div class="shrink-0 w-8 h-8 rounded-full bg-[#6366f1] flex items-center justify-center text-xs font-bold">
           {{ strtoupper(substr($notification->data['follower_username'] ?? '?', 0 , 1)) }}
         </div>
         
         <div class="flex flex-col min-w-0">
-          <span class="text-sm font-medium truncate">
+          <span class="text-sm font-medium text-[#100828] truncate">
             {{ $notification->data['title'] ?? '' }}
           </span>
           <span class="text-xs text-gray-500 truncate">

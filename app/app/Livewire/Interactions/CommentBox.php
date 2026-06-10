@@ -46,6 +46,8 @@ class CommentBox extends Component
 
         //Recargar comentarios
         $this->loadComments();
+
+        $this->dispatch('commentCountUpdated', postId: $this->post->id);
     }
 
     public function deleteComment($commentId)
@@ -58,5 +60,7 @@ class CommentBox extends Component
       $comment->delete();
 
       $this->loadComments();
+
+      $this->dispatch('commentCountUpdated', postId: $this->post->id);
     }
 }

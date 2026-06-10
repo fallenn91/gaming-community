@@ -1,4 +1,4 @@
-<div class="relative" x-data="{ open: false }">
+<div class="relative" x-data="{ open: false }" wire:poll.15s="refreshCount">
     <button
       @click="open = !open"
       class="relative p-2"  

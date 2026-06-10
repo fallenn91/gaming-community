@@ -8,6 +8,7 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Livewire\Users\ProfileView;
+use App\Livewire\Users\EditUser;
 use App\Livewire\Games\GameSearch;
 use App\Livewire\Games\GameLibrary;
 use App\Livewire\Communities\CommunityShow;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/profile/{user}', ProfileView::class)->name('profile');
+    Route::get('/settings/profile', EditUser::class)->name('profile.edit');
     
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/explore', ExplorePage::class)->name('explore');

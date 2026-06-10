@@ -19,8 +19,8 @@ class UserStatsService
 
     private function getLikesReceived(User $user): int
     {
-        return $user->posts()
-            ->withCount('likes')
-            ->sum('likes_count');
+        return \App\Models\Like::query()
+          ->whereHas('post', fn ($q) => $q->where('user_id', $user->id))
+          ->count();
     }
 }

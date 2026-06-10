@@ -14,12 +14,18 @@ class NotificationBell extends Component
       $this->unreadCount = auth()->user()->unreadNotifications()->count();
     }
 
-    #[On('notification-read')]
+    
     public function refreshCount(): void
     {
       $this->unreadCount = auth()->user()
         ->unreadNotifications()
         ->count();
+    }
+
+    #[On('notification-read')]
+    public function onRead(): void
+    {
+      $this->refreshCount();
     }
 
     public function render()

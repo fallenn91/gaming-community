@@ -6,6 +6,10 @@ use Livewire\Component;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithFileUploads;
+use App\Services\AchievementService;
+use App\Services\XpService;
+use Illuminate\Support\Facades\Cache;
+
 
 class CreatePost extends Component
 {
@@ -13,7 +17,6 @@ class CreatePost extends Component
 
     public $content = '';
     public $image;
-    public $post;
 
     protected $rules = [
       'content' => 'required|string|max:500',
@@ -28,8 +31,8 @@ class CreatePost extends Component
     public function createPost()
     {
       $this->validate();
-
-       $imagePath = null;
+      
+      $imagePath = null;
 
       if ($this->image) {
         $imagePath = $this->image->store('PostImage', 'public');
@@ -47,5 +50,16 @@ class CreatePost extends Component
       $this->reset(['content', 'image']);
 
       $this->dispatch('postCreated');
+
+      $key = 'achievement_toast:' . Auth::id();
+      $pending = Cache::get($key, []);
+      Cache::forget($key);
+
+      foreach ($pending as $achievement) {
+        $this->dispatch('toast', [
+          'message' => "Achievement Unlocked: {$achievement['name']} (+{$achievement['xp']} XP)",
+          'type' => 'success',
+         ]);
+      }
     }
 }

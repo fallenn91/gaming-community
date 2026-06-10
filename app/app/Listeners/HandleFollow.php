@@ -39,7 +39,7 @@ class HandleFollow implements ShouldQueue
           ->where('following_id', $followed->id)
           ->exists();
 
-        if (!followExists) {
+        if (!$followExists) {
             return;
         }
 
@@ -53,6 +53,7 @@ class HandleFollow implements ShouldQueue
         // Reputación siempre
         if ($reward->wasRecentlyCreated) {
             $this->xpService->award($follower, 2, 'Followed ' . $followed->username);
+            app(\App\Services\ReputationService::class)->gain($followed, 'follower_gained');
         }
 
         $followed->increment('reputation', 1);

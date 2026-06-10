@@ -22,7 +22,7 @@
     </div>
 
     <!-- Messages Container -->
-    <div class="flex-1 overflow-y-auto p-4 space-y-4" id="messages-container">
+    <div wire:poll.3s class="flex-1 overflow-y-auto p-4 space-y-4" id="messages-container">
 
         @foreach ($this->chatMessages as $msg)
             @php $isMine = $msg['sender_id'] === auth()->id(); @endphp

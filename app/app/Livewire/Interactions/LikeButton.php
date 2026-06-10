@@ -61,6 +61,6 @@ class LikeButton extends Component
       }
 
       $this->loadLikes();
-      $this->dispatch('likeUpdated');
+      $this->dispatch('likeUpdated', postId: $this->post->id);
     }
 }

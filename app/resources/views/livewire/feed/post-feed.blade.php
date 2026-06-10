@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.8s="checkForUpdates">
   @foreach ($posts as $post)
       <div class="post mb-3">
   
