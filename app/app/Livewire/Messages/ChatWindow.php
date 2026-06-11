@@ -35,6 +35,10 @@ class ChatWindow extends Component
 
     public function sendMessage(): void
     {
+        if (auth()->id() !== $this->recipient->id) {
+          return;
+        }
+        
         $this->validate([
             'newMessage' => 'required|string|max:1000'
         ]);

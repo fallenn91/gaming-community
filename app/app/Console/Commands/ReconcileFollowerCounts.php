@@ -34,7 +34,7 @@ class ReconcileFollowerCounts extends Command
           ->groupBy('following_id');
 
         $realFollowers = DB::table('follows')
-          ->selectRow('follower_id as user_id, COUNT(*) as real_count')
+          ->selectRaw('follower_id as user_id, COUNT(*) as real_count')
           ->groupBy('follower_id');
 
         $users = DB::table('users')

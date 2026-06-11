@@ -79,13 +79,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->last_seen && $this->last_seen->gt(now()->subMinutes(5));
     }
 
-    public function getXpInLevelAttribute()
-    {
-        $currentLevelXp = ($this->level * $this->level) * 100;
-
-        return $this->xp - $currentLevelXp;
-    }
-
     public function xpForNextLevel(): int
     {
       $nextLevel = $this->level + 1;

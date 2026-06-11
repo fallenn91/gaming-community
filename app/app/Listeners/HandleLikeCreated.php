@@ -28,7 +28,7 @@ class HandleLikeCreated implements ShouldQueue
         $user = $event->like->post->user;
 
         $this->xpService->award($user, 2, 'Like created');
-        app(\App\Services\ReputationService::class)->gain($postOwner, 'like_received');
+        app(\App\Services\ReputationService::class)->gain($user, 'like_received');
 
         if ($user->userStat) {
           $user->userStat->increment('likes');

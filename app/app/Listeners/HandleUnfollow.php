@@ -29,14 +29,6 @@ class HandleUnfollow implements ShouldQueue
 
         $followed = $event->followed;
 
-        $followingExists = Follow::where('follower_id', $follower->id)
-          ->where('following_id', $followed->id)
-          ->exists();
-
-        if (!$followingExists) {
-            return;
-        }
-
         \DB::table('users')
             ->where('id', $follower->id)
             ->where('following_count', '>', 0)

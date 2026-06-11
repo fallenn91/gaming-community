@@ -19,29 +19,30 @@ class AchievementService
     {
         $stats = $this->statsService->getStats($user);
 
+        $unlockedIds = UserAchievement::where('user_id', $user->id)->pluck('achievement_id');
+
         $achievements = Achievement::where('type', $type)
-            ->whereNotIn('id', $user->achievements()->pluck('achievement_id'))
+            ->whereNotIn('id', $unlockedIds)
             ->get();
 
-        foreach ($achievements as $achievement) {
-            $alreadyUnlocked = UserAchievement::where('user_id', $user->id)
-                ->where('achievement_id', $achievement->id)
-                ->exists();
-
-            if ($alreadyUnlocked) {
-                continue;
-            }
-            
+        foreach ($achievements as $achievement) {            
             if (($stats[$achievement->type] ?? 0) >= $achievement->threshold) {
-                UserAchievement::create([
+                UserAchievement::firstOrCreate([
                     'user_id' => $user->id,
                     'achievement_id' => $achievement->id,
-                    'unlocked_at' => now(),
+                ], [
+                  'unlocked_at' => now(),
                 ]);
 
-                $user->increment('xp', $achievement->xp_reward ?? 0);
+                if ($userAchievement->wasRecentlyCreated) {
+                  $this->xpService->award(
+                    $user, 
+                    $achievement->xp_reward,
+                    'Achievement: ' . $achievement->name
+                  );
+                  event(new \App\Events\AchievementUnlocked($user, $achievement));
+                }              
 
-                event(new \App\Events\AchievementUnlocked($user, $achievement));
             }
         }
     }

@@ -29,17 +29,6 @@ class LikeButton extends Component
       $this->hasLiked = $this->post->likes()->where('user_id', auth()->id())->exists();
     }
 
-    public function deleteLike($likeId)
-    {
-      $like = Like::findOrFail($likeId);
-      if ($like->user_id !== auth()->id()) {
-        return;
-      }
-      $like->delete();
-
-      $this->loadLikes();
-    }
-
     public function toggleLike()
     {
       if (! auth()->check()) {

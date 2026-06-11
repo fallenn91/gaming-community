@@ -17,6 +17,7 @@ use App\Models\Follow;
 class HandleFollow implements ShouldQueue
 {
     use InteractsWithQueue;
+
     public string $queue = 'xp';
     /**
      * Create the event listener.
@@ -35,13 +36,7 @@ class HandleFollow implements ShouldQueue
 
         $followed = $event->followed;
 
-        $followExists = Follow::where('follower_id', $follower->id)
-          ->where('following_id', $followed->id)
-          ->exists();
-
-        if (!$followExists) {
-            return;
-        }
+        User::withCount(['followers', 'following'])->find($id);
 
         $reward = FollowReward::firstOrCreate([
           'follower_id' => $follower->id,
@@ -55,8 +50,6 @@ class HandleFollow implements ShouldQueue
             $this->xpService->award($follower, 2, 'Followed ' . $followed->username);
             app(\App\Services\ReputationService::class)->gain($followed, 'follower_gained');
         }
-
-        $followed->increment('reputation', 1);
 
         // Estado actual
         $follower->increment('following_count');

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('achievement_id')->constrained('achievements')->cascadeOnDelete();
+            $table->unique(['user_id', 'achievement_id']);
             $table->timestamp('unlocked_at')->nullable();
             $table->timestamps();
         });

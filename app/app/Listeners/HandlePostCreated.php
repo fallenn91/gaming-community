@@ -8,7 +8,7 @@ use App\Events\PostCreated;
 use App\Services\AchievementService;
 use App\Services\XpService;
 
-class HandlePostCreated
+class HandlePostCreated implements ShouldQueue
 {
     use InteractsWithQueue;
     public string $queue = 'xp';

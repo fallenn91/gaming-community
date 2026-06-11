@@ -37,12 +37,12 @@ class AwardGuildXp implements ShouldQueue
           15, 'post'
         ],
         $event instanceof LikeCreated => [
-          $event->like->post->community,
+          $event->like->post->communityPosts()->first()?->community,
           $event->like->user,
           2, 'like'
         ],
         $event instanceof CommentCreated => [
-          $event->comment->post->community,
+          $event->comment->post->communityPosts()->first()?->community,
           $event->comment->user,
           2, 'comment'
         ],

@@ -39,7 +39,7 @@ class EditUser extends Component
         'name' => 'required|string|max:55',
         'username' => 'required|string|max:255|unique:users,username,' . $user->id,
         'email' => 'required|email',
-        'password' => 'nullable|password|min:8',
+        'password' => 'nullable|string|confirmed|min:8',
         'bio' => 'required|string|max:255',
         'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         'banner' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
