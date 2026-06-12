@@ -22,42 +22,25 @@ class ConversationList extends Component
     {
         $userId = auth()->id();
 
-        $messages = Message::where(function ($q) use ($userId) {
+        $subquery = Message::query()
+            ->selectRaw('MAX(id) as last_id')
+            ->where(function ($q) use ($userId) {
                 $q->where('sender_id', $userId)
                   ->orWhere('receiver_id', $userId);
             })
+            ->groupByRaw(
+                'LEAST(sender_id, receiver_id),
+                GREATEST(sender_id, receiver_id)'
+            );
+
+        return Message::query()
+            ->joinSub($subquery, 'c', function ($join) {
+                $join->on('messages.id', '=', 'c.last_id');
+            })
             ->with(['sender', 'receiver'])
-            ->latest()
+            ->latest('messages.created_at')
             ->get();
-
-        $grouped = $messages->groupBy(function ($msg) use ($userId) {
-            return $msg->sender_id === $userId
-                ? $msg->receiver_id
-                : $msg->sender_id;
-        });
-
-        return $grouped->map(function ($msgs) use ($userId) {
-
-            $lastMessage = $msgs->first();
-
-            $other = $lastMessage->sender_id === $userId
-                ? $lastMessage->receiver
-                : $lastMessage->sender;
-
-            if (!$other) return null;
-
-            return (object) [
-                'user' => $other,
-                'last_message' => $lastMessage,
-                'unread_count' => $msgs->where('sender_id', $other->id)
-                    ->whereNull('read_at')
-                    ->count(),
-            ];
-
-        })
-        ->filter()
-        ->sortByDesc(fn ($c) => $c->last_message->created_at);
-    } 
+    }
 
     #[On('echo-private:chat.{authId},MessageSent')]
     public function messageReceived(): void

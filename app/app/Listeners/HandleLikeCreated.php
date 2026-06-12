@@ -30,9 +30,7 @@ class HandleLikeCreated implements ShouldQueue
         $this->xpService->award($user, 2, 'Like created');
         app(\App\Services\ReputationService::class)->gain($user, 'like_received');
 
-        if ($user->userStat) {
-          $user->userStat->increment('likes');
-        }
+        $user->userStat()->firstOrCreate()->increment('likes_received');
         
         app(\App\Services\AchievementService::class)->check($user, 'likes_received');
     }

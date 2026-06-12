@@ -19,9 +19,18 @@ class ExplorePage extends Component
     public function render()
     {
         return view('livewire.explore-page', [
-          'games' => Game::latest()->take(12)->get(),
-          'users' => User::latest()->take(12)->get(),
-          'posts' => Post::latest()->take(12)->get(),
+          'games' => Game::withCount('users')
+            ->orderByDesc('users_count')
+            ->take(12)
+            .>get();
+          'users' => User::withCount('followers')
+            ->orderByDesc('followers_count')
+            ->take(12)
+            ->get();
+          'posts' => Post:::withCount('likes')
+            ->orderByDesc('likes_count')
+            ->take(12)
+            ->get();
         ]);
     }
 }

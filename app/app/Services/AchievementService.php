@@ -3,6 +3,7 @@
 namespace App\Services;
 use App\Models\Achievement;
 use App\Models\UserAchievement;
+use App\Services\XpService;
 
 class AchievementService
 {
@@ -10,7 +11,7 @@ class AchievementService
     /**
      * Create a new class instance.
      */
-    public function __construct(private UserStatsService $statsService)
+    public function __construct(private XpService $xpService)
     {
         //
     }
@@ -27,7 +28,7 @@ class AchievementService
 
         foreach ($achievements as $achievement) {            
             if (($stats[$achievement->type] ?? 0) >= $achievement->threshold) {
-                UserAchievement::firstOrCreate([
+                $userAchivement = UserAchievement::firstOrCreate([
                     'user_id' => $user->id,
                     'achievement_id' => $achievement->id,
                 ], [

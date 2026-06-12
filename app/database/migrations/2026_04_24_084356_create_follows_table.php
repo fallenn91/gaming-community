@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
+            $table->index(['follower_id', 'following_id']);
+            $table->index('following_id');
             $table->foreignId('follower_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('following_id')->constrained('users')->onDelete('cascade');
             $table->unique(['follower_id', 'following_id']);

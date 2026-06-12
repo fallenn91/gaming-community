@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\UserUnfollowed;
 use App\Models\Follow;
+use App\Services\ReputationService;
 
 class HandleUnfollow implements ShouldQueue
 {
@@ -15,7 +16,7 @@ class HandleUnfollow implements ShouldQueue
     /**
      * Create the event listener.
      */
-    public function __construct()
+    public function __construct(protected ReputationService $reputationService)
     {
         //
     }
@@ -40,10 +41,7 @@ class HandleUnfollow implements ShouldQueue
             ->decrement('followers_count');
  
         // Reputación 
-        \DB::table('users')
-            ->where('id', $followed->id)
-            ->where('reputation', '>', 0)
-            ->decrement('reputation');
+        $this->reputationService->lose($followed, 'follower_lost');
     }
 
     public function failed(UserUnfollowed $event, \Throwable $exception): void

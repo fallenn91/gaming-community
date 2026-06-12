@@ -20,7 +20,7 @@ class GameSearch extends Component
       if (strlen($this->query) < 2) return;
 
       $cacheKey = 'igdb:search' . md5($this->query);
-      $this->results = Cache::remembter($cacheKey, 3600, function () {
+      $this->results = Cache::remember($cacheKey, 3600, function () {
         return rescue(
           fn() => app(IgdbService::class)->searchGames($this->query), []
         );

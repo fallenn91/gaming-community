@@ -9,6 +9,8 @@ use App\Services\LevelService;
 use App\Events\UserFollowed;
 use App\Services\AchievementService;
 use App\Services\XpService;
+use App\Models\User;
+
 use App\Notifications\NewFollowerNotification;
 
 use App\Models\Follow;

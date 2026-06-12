@@ -39,7 +39,9 @@ class LikeButton extends Component
         $like = $this->post->likes()->where('user_id', auth()->id())->first();
 
         if ($like) {
+          $user = $this->post->user;
           $like->delete();
+          app(\App\Services\ReputationService::class)->lose($user, 'like_removed');
         }
       } else {
         $like = $this->post->likes()->create([

@@ -29,9 +29,7 @@ class HandleCommentCreated implements ShouldQueue
 
         $this->xpService->award($user, 5, 'Comment created');
 
-        if ($user->userStat) {
-          $user->userStat->increment('comments');
-        }
+        $user->userStat()->firstOrCreate()->increment('comments_count');
 
         app(\App\Services\AchievementService::class)->check($user, 'comments');
     }

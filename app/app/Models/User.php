@@ -79,6 +79,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->last_seen && $this->last_seen->gt(now()->subMinutes(5));
     }
 
+    public function userStat()
+    {
+      return $this->hasOne(UserStat::class);
+    }
+
     public function xpForNextLevel(): int
     {
       $nextLevel = $this->level + 1;

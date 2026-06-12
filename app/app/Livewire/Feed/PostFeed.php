@@ -14,7 +14,7 @@ class PostFeed extends Component
 
     protected $paginationTheme = 'tailwind';
     public $post;
-    public boolean $hasNewContent = false;
+    public bool $hasNewContent = false;
     public int $lastPostId = 0;
     public $user = null;
     protected $listeners = ['likeUpdated' => '$refresh', 'postCreated' => 'refreshPosts', 'achievementUnlocked' => 'showToast', 'commentCountUpdated' => '$refresh'];
@@ -33,7 +33,7 @@ class PostFeed extends Component
     public function render()
     {
 
-      $query = Post::with(['likes', 'comments'])
+      $query = Post::withCount(['likes', 'comments'])
       ->with(['user:id,username,avatar', 'tags:id,name'])
       ->latest();
 

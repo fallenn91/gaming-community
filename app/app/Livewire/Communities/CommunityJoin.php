@@ -10,6 +10,11 @@ class CommunityJoin extends Component
 
     public Community $community;
 
+    public function mount()
+    {
+      $this->community = $community;
+    }
+
     public function join()
     {
       app(CommunityJoinService::class)->join(auth()->user(), $this->community);

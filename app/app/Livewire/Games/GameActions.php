@@ -9,6 +9,7 @@ use App\Models\Game;
 class GameActions extends Component
 {
     public Game $game;
+    public $userGame;
     public bool $showStatuses = true;
 
     public function toggleLibrary()

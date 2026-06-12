@@ -24,10 +24,7 @@ class ProfileView extends Component
       
       $this->user = $user;
       
-      $this->achievements = $this->user->achievements()->latest()->take(6)->get();
-      $this->followersCount = $this->user->followers()->count();
-      $this->followingCount = $this->user->following()->count();
-      $this->likesCount = $this->user->likes()->count();
+      $this->achievements = $this->user->userStat()->first();
 
     }
 

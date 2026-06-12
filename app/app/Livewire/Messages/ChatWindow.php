@@ -35,7 +35,7 @@ class ChatWindow extends Component
 
     public function sendMessage(): void
     {
-        if (auth()->id() !== $this->recipient->id) {
+        if (auth()->id() === $this->recipient->id) {
           return;
         }
         

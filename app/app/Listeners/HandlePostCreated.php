@@ -30,9 +30,7 @@ class HandlePostCreated implements ShouldQueue
         $this->xpService->award($user, 10, 'Post created');
         app(\App\Services\ReputationService::class)->gain($user, 'post_created');
 
-        if ($user->userStat) {
-          $user->userStat->increment('posts');
-        }
+        $user->userStat()->firstOrCreate()->increment('posts_count');
         
         app(AchievementService::class)->check($user, 'posts');
     }

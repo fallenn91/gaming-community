@@ -30,12 +30,14 @@ class ReconcileFollowerCounts extends Command
 
         // Conteo real desde la BBDD
         $realFollowers = DB::table('follows')
-          ->selectRaw('following_id as user_id, COUNT(*) as real_count')
-          ->groupBy('following_id');
+          ->selectRaw('following_id as user_id, COUNT(*) as total')
+          ->groupBy('following_id')
+          ->pluck('total', 'following_id');
 
-        $realFollowers = DB::table('follows')
-          ->selectRaw('follower_id as user_id, COUNT(*) as real_count')
-          ->groupBy('follower_id');
+        $realFollowing = DB::table('follows')
+          ->selectRaw('follower_id as user_id, COUNT(*) as total')
+          ->groupBy('follower_id')
+          ->pluck('total', 'follower_id');
 
         $users = DB::table('users')
           ->select('id', 'username', 'followers_count', 'following_count')
@@ -44,11 +46,11 @@ class ReconcileFollowerCounts extends Command
         $discrepancies = 0;
 
         foreach ($users as $user) {
-          $realFC = DB::table('follows')->where('following_id', $user->id)->count();
-          $realFng = DB::table('follows')->where('follower_id', $user->id)->count();
+          $realFC = $realFollowers[$user->id] ?? 0;
+          $realFng = $realFollowing[$user->id] ?? 0;
 
-          $fcMismatch = $user->followers_count !== $realFC;
-          $fngMismatch = $user->following_count !== $realFng;
+          $fcMismatch = (int)$user->followers_count !== $realFC;
+          $fngMismatch = (int)$user->following_count !== $realFng;
 
           if ($fcMismatch || $fngMismatch) {
             $discrepancies++;

@@ -7,6 +7,8 @@ use App\Models\Community;
 
 class CommunityShow extends Component
 {
+    public Community $community;
+
     public function render()
     {
         return view('livewire.communities.community-show');
