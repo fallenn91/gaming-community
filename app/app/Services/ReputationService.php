@@ -62,12 +62,7 @@ class ReputationService
       if ($type === 'upvote') {
         $target->increment('reputation', self::VOTES['upvote']);
       } else {
-        User::whereKey($target->id)
-          ->update([
-            'reputation' 0> \DB::raw(
-              'GREATEST(0, reputation - ' . self::VOTES['downvote'] . ')'
-            )
-          ]);
+        User::whereKey($target->id)->update(['reputation' => \DB::raw('GREATEST(0, reputation - ' . self::VOTES['downvote'] . ')')]);
       }
 
       \Illuminate\Support\Facades\Cache::put($cacheKey, $type, now()->addHours(24));

@@ -4,6 +4,8 @@ namespace App\Livewire\Interactions;
 
 use Livewire\Component;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CommentBox extends Component
 {   
@@ -48,6 +50,17 @@ class CommentBox extends Component
         $this->loadComments();
 
         $this->dispatch('commentCountUpdated', postId: $this->post->id);
+
+        $key = 'achievement_toast:' . Auth::id();
+        $pending = Cache::get($key, []);
+        Cache::forget($key);
+
+        foreach ($pending as $achievement) {
+          $this->dispatch('toast', [
+            'message' => "Achievement Unlocked: {$achievement['name']} (+{$achievement['xp']} XP)",
+            'type' => 'success',
+          ]);
+        }
     }
 
     public function deleteComment($commentId)

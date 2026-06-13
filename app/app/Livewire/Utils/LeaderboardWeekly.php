@@ -4,10 +4,10 @@ namespace App\Livewire\Utils;
 
 use Livewire\Component;
 
-class Leaderboard extends Component
+class LeaderboardWeekly extends Component
 {
     public function render()
     {
-        return view('livewire.utils.leaderboard');
+        return view('livewire.utils.leaderboard-weekly');
     }
 }

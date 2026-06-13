@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('content');
             $table->enum('status', ['sent', 'delivered', 'read'])->default('sent');
             $table->timestamp('read_at')->nullable();
-            $table->index(['sender_id', 'receiver_id']);
             $table->timestamps();
         });
     }

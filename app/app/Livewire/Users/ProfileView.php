@@ -44,7 +44,7 @@ class ProfileView extends Component
 
         $this->followersCount = $this->user->followers()->count();
         $this->followingCount = $this->user->following()->count();
-        $this->likesCount = $this->user->likes()->count();
+        $this->likesCount = $this->user->posts()->likes()->count();
     }
 
 }

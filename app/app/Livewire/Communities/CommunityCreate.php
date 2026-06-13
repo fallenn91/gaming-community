@@ -7,6 +7,9 @@ use Livewire\Component;
 use App\Models\Game;
 use App\Services\CommunityCreationService;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+
 
 class CommunityCreate extends Component
 {
@@ -39,6 +42,17 @@ class CommunityCreate extends Component
       if ($this->image) {
         $path = $this->image->store('communities', 'public');
         $community->update(['image' => $path]);
+      }
+
+      $key = 'achievement_toast:' . Auth::id();
+      $pending = Cache::get($key, []);
+      Cache::forget($key);
+
+      foreach ($pending as $achievement) {
+        $this->dispatch('toast', [
+          'message' => "Achievement Unlocked: {$achievement['name']} (+{$achievement['xp']} XP)",
+          'type' => 'success',
+         ]);
       }
 
       session()->flash('success', 'Community created successfully!');

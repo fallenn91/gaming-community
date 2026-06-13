@@ -5,6 +5,8 @@ namespace App\Livewire\Interactions;
 use Livewire\Component;
 use App\Models\Like;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class LikeButton extends Component
 {

@@ -15,6 +15,7 @@ class XpBar extends Component
       $this->refresh();
     }
 
+    #[On('xp-updated')]
     public function refresh(): void
     {
       $user = auth()->user()->fresh();

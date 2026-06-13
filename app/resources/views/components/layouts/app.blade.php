@@ -13,40 +13,50 @@
 
 <body class="bg-[#1a1333] text-white">
 
+<div x-data="{ sidebarOpen: false }" x-init="sidebarOpen = window.innerWidth >= 1024" class="relative">
+
 <!-- NAVBAR -->
 <header class="w-full bg-[#1a1333] fixed top-0 left-0 z-50">
-  <div class="max-w-6xl mx-auto px-4 py-3 text-[20px] flex items-center justify-between">
-
-    <!-- LOGO -->
+  <div class="max-w-6xl mx-auto px-4 py-3 text-[20px] flex items-center relative gap-4">
     <div class="text-[#a78bfa] font-bold">
       CYBERCOMM
     </div>
-
-    <input 
-      class="bg-black/30 px-3 py-1 rounded text-sm border border-[#a78bfa]  focus:ring-2 focus:ring-[#a78bfa]"
-      placeholder="Search gamers..."
-    >
-
-    <!-- NAV LINKS -->
-    <nav class="flex gap-6 text-base text-gray-300">
-      <a class="hover:text-[#a78bfa]" href="{{ route('home')}}">Home</a>
-      <a class="hover:text-[#a78bfa]" href="{{ route('explore')}}">Explore</a>
-      <a class="hover:text-[#a78bfa]" href="{{ route('community')}}">Communities</a>
-      <a class="hover:text-[#a78bfa]" href="{{ route('messages.index')}}">Chat</a>
-      <a class="hover:text-[#a78bfa]" href="{{ route('profile', auth()->user()) }}">Profile</a>
-      <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit" class="hover:text-red-400">
-            Logout
-        </button>
-      </form>
-    </nav>
-    @auth
-      <livewire:notifications.notification-bell />
-    @endauth
+    <div class="absolute left-1/2 transform -translate-x-1/2 w-2/3 max-w-xl hidden lg:block">
+      <livewire:utils.global-search />
+    </div>
+    <div class="flex items-center gap-8 ml-auto">
+      @auth
+        <livewire:notifications.notification-bell />
+      @endauth
+          <a href="{{ route('profile', auth()->user()->id) }}" class="ml-2">
+            <img src="{{ asset('storage/' .  auth()->user()->avatar ) }}" class="w-8 h-8 rounded-full">
+          </a>
 
   </div>
 </header>
+
+<!-- Sliding left sidebar (outside main) -->
+<div class="fixed top-15 bottom-0 left-0 w-56 bg-black/10 p-4 border border-white/5 transform transition-transform duration-300 z-40 lg:translate-x-0">
+  <nav class="space-y-2 text-sm">
+    <a href="{{ route('home') }}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Home</a>
+    <a href="{{ route('explore') }}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Explore</a>
+    <a href="{{ route('community') }}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Guilds</a>
+    <a href="{{ route('messages.index') }}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Chat</a>
+    <a href="{{ route('profile', auth()->user()->id) }}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Profile</a>
+    <form method="POST" action="{{ route('logout') }}">
+      @csrf
+      <button type="submit" class="w-full text-left px-3 py-2 rounded hover:bg-[#a78bfa]/10 hover:text-red-500 cursor-pointer">Logout</button>
+    </form>
+  </nav>
+  <div class="mt-4 pt-4 border-t border-white/5">
+    <h4 class="text-[#a78bfa] mb-2 mt-2 text-sm">Leaderboard</h4>
+    <nav class="space-y-2 text-sm">
+      <a href="" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Weekly</a>
+      <a href="" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Global</a>
+    </nav>
+  </div>
+</div>
+
 
 @php
   $noHasSideBar = ['explore', 'community'];   
@@ -54,7 +64,7 @@
 @endphp
 
 <!-- MAIN CONTENT -->
-<div class="max-w-6xl mx-auto pt-20 px-4 grid gap-6 {{ $hasSideBar? 'lg:grid-cols-[1fr_300px]' : 'grid-cols-1' }}">
+<div class="max-w-6xl mx-auto pt-20 px-4 grid gap-6 {{ $hasSideBar? 'lg:grid-cols-[1fr_240px]' : 'grid-cols-1' }}">
   
     <!-- SLOT (aquí entra Livewire o Blade) -->
     <div
@@ -133,6 +143,7 @@
       </div>
     </aside>
     @endif
+</div>
 </div>
 @auth
   <livewire:user.presence />

@@ -50,6 +50,7 @@ class CreatePost extends Component
       $this->reset(['content', 'image']);
 
       $this->dispatch('postCreated');
+      $this->dispatch('xp-updated');
 
       $key = 'achievement_toast:' . Auth::id();
       $pending = Cache::get($key, []);

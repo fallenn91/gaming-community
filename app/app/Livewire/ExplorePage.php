@@ -22,15 +22,15 @@ class ExplorePage extends Component
           'games' => Game::withCount('users')
             ->orderByDesc('users_count')
             ->take(12)
-            .>get();
+            ->get(),
           'users' => User::withCount('followers')
-            ->orderByDesc('followers_count')
+            ->orderByDesc('users.followers_count')
             ->take(12)
-            ->get();
-          'posts' => Post:::withCount('likes')
+            ->get(),
+          'posts' => Post::withCount('likes')
             ->orderByDesc('likes_count')
             ->take(12)
-            ->get();
+            ->get(),
         ]);
     }
 }
