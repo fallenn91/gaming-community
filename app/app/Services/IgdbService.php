@@ -20,8 +20,8 @@ class IgdbService
 
     private function getToken(): string
     {
-      return Cache::remember('igbd_token', now()->addDays(50), function () {
-        $response = Http::post('https://id.twitch.tv/auth2/token', [
+      return Cache::remember('igdb_token', now()->addDays(50), function () {
+        $response = Http::post('https://id.twitch.tv/oauth2/token', [
           'client_id' => $this->clientId,
           'client_secret' => $this->clientSecret,
           'grant_type' => 'client_credentials',

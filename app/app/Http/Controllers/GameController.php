@@ -15,7 +15,7 @@ class GameController extends Controller
     public function search(Request $request)
     {
         $request->validate([
-          'q' => required|string|max:100,
+          'q' => 'required|string|max:100',
         ]);
         $games = $this->igdb->searchGames($request->q);
         return response()->json($games);
