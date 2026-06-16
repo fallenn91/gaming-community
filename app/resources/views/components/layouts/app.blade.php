@@ -51,8 +51,8 @@
   <div class="mt-4 pt-4 border-t border-white/5">
     <h4 class="text-[#a78bfa] mb-2 mt-2 text-sm">Leaderboard</h4>
     <nav class="space-y-2 text-sm">
+      <a href="{{ route('leaderboard.users')}}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Global</a>
       <a href="" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Weekly</a>
-      <a href="" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Global</a>
     </nav>
   </div>
 </div>

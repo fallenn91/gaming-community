@@ -155,4 +155,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
       return $this->hasMany(Community::class, 'owner_id');
     }
+
+    public function communityModeration()
+    {
+      return $this->hasMany(CommunityModeration::class);
+    }
 }

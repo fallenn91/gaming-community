@@ -15,6 +15,7 @@ use App\Livewire\Games\GameLibrary;
 use App\Livewire\Communities\CommunityShow;
 use App\Livewire\Communities\CommunityCreate;
 use App\Livewire\ExplorePage;
+use App\Livewire\Utils\LeaderboardGlobal;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/profile/{user}', ProfileView::class)->name('profile');
     Route::get('/settings/profile', EditUser::class)->name('profile.edit');
-    
+        
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/explore', ExplorePage::class)->name('explore');
 
@@ -36,6 +37,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
     Route::get('/messages/{recipient}', [MessageController::class, 'show'])->name('messages.show');
+
+    Route::get('/leaderboard-global', LeaderboardGlobal::class)->name('leaderboard.users');
 
     // routes/web.php — dentro del grupo auth
     Route::get('/games/search', [GameController::class, 'search'])->name('games.search');
