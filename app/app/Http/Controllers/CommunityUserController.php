@@ -13,13 +13,9 @@ class CommunityUserController extends Controller
       // Role?
       // Puede expulsar a alguien con igual o mayor rango?
 
-      if ($this->user) {
-        $userCommunity = UserCommunity::where('community_id', $communityId)
+      $userCommunity = UserCommunity::where('community_id', $communityId)
             ->where('user_id', $userId)
-            ->first();
-
-        $userCommunity->delete();
-      }      
+            ->first();           
       
     }
 }
