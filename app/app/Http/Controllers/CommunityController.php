@@ -9,8 +9,19 @@ class CommunityController extends Controller
 {
     public function index()
     {
-      $communities = Community::all();
-      return view('community', compact('communities'));
+        $communities = Community::all();
+        $userCommunity = null;
+
+        if (auth()->check()) {
+            $user = auth()->user();
+            $userCommunity = Community::where('owner_id', $user->id)
+                ->orWhereHas('members', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                ->first();
+        }
+
+        return view('community', compact('communities', 'userCommunity'));
     }
 
     public function show(string $slug)

@@ -8,6 +8,9 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\DiscoverController;
+use App\Http\Controllers\EventsController;
+use App\Http\Controllers\WeeklyLeaderboardController;
 use App\Livewire\Users\ProfileView;
 use App\Livewire\Users\EditUser;
 use App\Livewire\Games\GameSearch;
@@ -30,6 +33,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/community', [CommunityController::class, 'index'])->name('community');
     Route::get('/community/{slug}', CommunityShow::class)->name('community.show');
     Route::get('/create', CommunityCreate::class)->name('community.create');
+    Route::get('/discover', [DiscoverController::class, 'index'])->name('discover');
+    Route::get('/events', [EventsController::class, 'index'])->name('events');
+    Route::get('/weekly-leaderboard', [WeeklyLeaderboardController::class, 'index'])->name('weekly.leaderboard');
 
     Route::get('/games/{slug}', GameSearch::class);
     Route::get('/my-library', GameLibrary::class)->name('library');

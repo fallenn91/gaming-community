@@ -165,24 +165,22 @@ class FollowFlowTest extends TestCase
     /**@test */
     public function test_follow_xp_reward_only_given_once(): void
     {
-      // follow_rewards garantiza que el xp solo se otorga la primera vez
+      $event = new UserFollowed($this->follower, $this->followed);
+
       Follow::create([
         'follower_id' => $this->follower->id,
-        'following_id' => $this->following->id,
+        'following_id' => $this->followed->id,
       ]);
-
-      event(new UserFollowed($this->follower, $this->followed));
 
       app(HandleFollow::class)->handle($event);
 
-      // Borrar follow y volver a crear
       Follow::where('follower_id', $this->follower->id)
-        ->where('following_id', $this->following->id)
+        ->where('following_id', $this->followed->id)
         ->delete();
 
       Follow::create([
         'follower_id' => $this->follower->id,
-        'following_id' => $this->following->id,
+        'following_id' => $this->followed->id,
       ]);
 
       app(HandleFollow::class)->handle($event);

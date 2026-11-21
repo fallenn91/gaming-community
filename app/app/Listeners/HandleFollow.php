@@ -35,10 +35,15 @@ class HandleFollow implements ShouldQueue
     public function handle(UserFollowed $event): void
     {
         $follower = $event->follower;
-
         $followed = $event->followed;
 
-        User::withCount(['followers', 'following'])->find($id);
+        $follow = Follow::where('follower_id', $follower->id)
+            ->where('following_id', $followed->id)
+            ->first();
+
+        if (! $follow) {
+            return;
+        }
 
         $reward = FollowReward::firstOrCreate([
           'follower_id' => $follower->id,
@@ -54,9 +59,19 @@ class HandleFollow implements ShouldQueue
         }
 
         // Estado actual
-        $follower->increment('following_count');
+        if ($follow->processed_at) {
+            return;
+        }
 
+        $follow->forceFill(['processed_at' => now()])->save();
+
+        $follower->refresh();
+        $followed->refresh();
+
+        $follower->increment('following_count');
         $followed->increment('followers_count');
+        $followed->increment('following_count');
+        $followed->refresh();
 
         $followed->notify(new NewFollowerNotification($follower));
         

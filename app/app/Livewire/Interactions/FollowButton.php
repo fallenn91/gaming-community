@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Interactions;
 
-use Livewire\Component;
 use App\Events\UserFollowed;
 use App\Events\UserUnfollowed;
+use App\Models\Follow;
 use App\Models\User;
+use Livewire\Component;
 
 class FollowButton extends Component
 {
@@ -14,64 +15,54 @@ class FollowButton extends Component
     public int $followersCount = 0;
     public int $followingCount = 0;
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
-      // Usuario recibido dentro del estadp del componente
-      $this->user = $user; 
+        $this->user = $user;
 
-      $authUser = auth()->user();
+        $authUser = auth()->user();
 
-      if (! $authUser) {
-        $this->isFollowing = false;
-        return;
-      }
+        if (! $authUser) {
+            $this->isFollowing = false;
 
-      // Usuario autenticado ya sigue a este perfil?
-      // auth()->user() obtenemos el usuario logueado
-      // following() usa esta relación, devuelve todos los usuarios que el usuario sigue
+            return;
+        }
 
-      // SQL SELECT * FROM followers WHERE folloer_id = auth_user_id
-      // Dentro de los seguidores existe ese usuario?
-      $this->isFollowing = $authUser->following()->where('following_id', $user->id)->exists(); 
+        $this->isFollowing = Follow::where('follower_id', $authUser->id)
+            ->where('following_id', $user->id)
+            ->exists();
     }
 
-    public function toggleFollow()
+    public function toggleFollow(): void
     {
-      // Usuario autenticado actualmente
-      $authUser = auth()->user();
-      
-      // Evitar self-follow
-      if (! $authUser || $authUser->id === $this->user->id) {
-        return;
-      }
+        $authUser = auth()->user();
 
-      // Comprueba si usuario autenticado ya sigue al otro usuario
-      if ($this->isFollowing) {
-        // Deatch -> elimina la relación en la tabla pivote
-        $authUser->following()->detach($this->user->id);
+        if (! $authUser || $authUser->id === $this->user->id) {
+            return;
+        }
 
-        $this->isFollowing = false;
+        $existing = Follow::where('follower_id', $authUser->id)
+            ->where('following_id', $this->user->id)
+            ->first();
 
-        event(new UserUnfollowed(
-          $authUser,
-          $this->user
-        ));
+        if ($existing) {
+            $existing->delete();
+            $this->isFollowing = false;
 
-      } else {
+            event(new UserUnfollowed($authUser, $this->user));
+        } else {
+            Follow::create([
+                'follower_id' => $authUser->id,
+                'following_id' => $this->user->id,
+            ]);
 
-        $authUser->following()->attach($this->user->id);
-  
-        $this->isFollowing = true;
-  
-        event (new UserFollowed(
-          $authUser,
-          $this->user
-        ));
-      }
-            
-      $this->followersCount = $this->user->followers()->count();
-      $this->followingCount = $this->user->following()->count();
-      $this->dispatch('followUpdated', userId: $this->user->id);
+            $this->isFollowing = true;
+
+            event(new UserFollowed($authUser, $this->user));
+        }
+
+        $this->followersCount = $this->user->followers()->count();
+        $this->followingCount = $this->user->following()->count();
+        $this->dispatch('followUpdated', userId: $this->user->id);
     }
 
     public function render()

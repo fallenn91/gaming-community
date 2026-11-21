@@ -3,6 +3,22 @@
       Create Community
     </a>
     <livewire:communities.leaderboard />
+
+    @if($userCommunity)
+        <div class="mt-6 rounded-3xl border border-cyan-400/20 bg-cyan-500/10 p-5">
+            <div class="flex items-center justify-between gap-3">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Your guild</p>
+                    <h2 class="mt-1 text-xl font-bold text-white">{{ $userCommunity->name }}</h2>
+                    <p class="mt-1 text-sm text-zinc-300">{{ $userCommunity->description ?: 'Your active community.' }}</p>
+                </div>
+                <a href="{{ route('community.show', $userCommunity->slug) }}" class="rounded-full border border-cyan-400/30 bg-black/20 px-4 py-2 text-sm font-medium text-cyan-200 transition hover:bg-black/40">
+                    Open
+                </a>
+            </div>
+        </div>
+    @endif
+
   <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3 mt-6">
       @foreach ($communities as $community)
           <div
@@ -68,6 +84,15 @@
                   <p class="mt-5 line-clamp-3 text-sm leading-relaxed text-zinc-300">
                       {{ $community->description }}
                   </p>
+
+                  <div class="mt-5 flex flex-wrap gap-2">
+                      <a href="{{ route('community.show', $community->slug) }}" class="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-2 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/20">
+                          Open
+                      </a>
+                      <a href="{{ route('community.show', $community->slug) }}#join" class="rounded-full border border-violet-400/30 bg-violet-500/10 px-3 py-2 text-sm font-medium text-violet-200 transition hover:bg-violet-500/20">
+                          Join
+                      </a>
+                  </div>
               </div>
           </div>
       @endforeach

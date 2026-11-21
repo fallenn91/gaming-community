@@ -1,56 +1,45 @@
 <x-layouts.app>
+  <div class="space-y-5">
+    <section class="overflow-hidden rounded-[28px] border border-[#a78bfa]/30 bg-gradient-to-br from-[#130f2a] via-[#24174a] to-[#100a22] p-6 shadow-[0_0_50px_rgba(167,139,250,0.16)]">
+      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-2xl">
+          <p class="text-sm uppercase tracking-[0.35em] text-cyan-300">Welcome back</p>
+          <h1 class="mt-2 text-3xl font-semibold text-white sm:text-4xl">Your gaming universe is ready to grow</h1>
+          <p class="mt-3 text-sm text-slate-300">Create posts, join guilds, discover new games, and stay close to the creators you love.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200">
+          🎮 3 live rooms · 12 fresh posts
+        </div>
+      </div>
+    </section>
 
-  {{-- HERO BANNER --}}
-  
-  <div class="w-full h-[250px] relative overflow-hidden flex items-center justify-center"
-       style="background: linear-gradient(135deg, #100828 0%, #1e0f45 50%, #100828 100%);">
-    <div class="absolute w-72 h-72 rounded-full top-[-50px] left-[-50px]"
-         style="background:radial-gradient(circle, rgba(139,92,246,0.45) 0%, transparent 70%); filter:blur(48px);"></div>
-    <div class="absolute w-72 h-72 rounded-full bottom-[-50px] right-[-50px]"
-         style="background:radial-gradient(circle, rgba(217,70,239,0.4) 0%, transparent 70%); filter:blur(48px);"></div>
-    <div class="text-center z-10">
-      <h1 class="text-4xl font-bold tracking-widest"
-          style="color: var(--primary-light); text-shadow: 0 0 24px var(--glow-primary), 0 0 60px rgba(139,92,246,0.3);">
-        CYBERCOMM
-      </h1>
-      <p class="text-sm mt-2" style="color: rgba(221,214,254,0.5);">
-        CONNECT • PLAY • EVOLVE
-      </p>
+    <div class="grid gap-4 lg:grid-cols-3">
+      <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+        <p class="text-sm font-semibold text-[#a78bfa]">⚡ Quick actions</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <a href="{{ route('discover') }}" class="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-sm text-cyan-300">Discover</a>
+          <a href="{{ route('events') }}" class="rounded-full border border-[#a78bfa]/30 bg-[#a78bfa]/10 px-3 py-2 text-sm text-[#d8c8ff]">Events</a>
+          <a href="{{ route('community') }}" class="rounded-full border border-white/10 px-3 py-2 text-sm text-slate-300">Guilds</a>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+        <p class="text-sm font-semibold text-[#a78bfa]">🔥 Trending tags</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          @foreach($tags as $tag)
+            <span class="rounded-full border border-[#a78bfa]/20 bg-[#a78bfa]/10 px-3 py-1 text-xs text-[#d8c8ff]">#{{ $tag->name }}</span>
+          @endforeach
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+        <p class="text-sm font-semibold text-[#a78bfa]">🎮 Play today</p>
+        <p class="mt-2 text-sm text-slate-300">Valorant • CS2 • Elden Ring • Minecraft</p>
+      </div>
     </div>
-  </div>
-  
-  {{-- TRENDING TAGS --}}
-  <div class="rounded-xl p-4"
-       style="background: var(--fondo-card); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.3);">
-    <h3 class="text-sm mb-3" style="color: var(--primary-light);">🔥 Trending</h3>
-    <div class="flex gap-2 overflow-x-auto text-xs">
-      @foreach($tags as $tag)
-        <span class="px-3 py-1 rounded whitespace-nowrap"
-              style="border: 1px solid rgba(139,92,246,0.35); color: var(--primary-light); background: rgba(139,92,246,0.08);">
-          #{{ $tag->name }}
-        </span>
-      @endforeach
-    </div>
-  </div>
 
-  {{-- PLAY TODAY --}}
-  <div class="rounded-xl p-4"
-       style="background: var(--fondo-card); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.3);">
-    <h3 class="text-sm mb-2" style="color: var(--primary-light);">🎮 Play Today</h3>
-    <p class="text-xs" style="color: rgba(221,214,254,0.5);">Valorant • CS2 • Elden Ring</p>
+    <livewire:feed.create-post />
+    <livewire:user.presence />
+    <livewire:feed.post-feed />
   </div>
-
-  {{-- FEATURED --}}
-  <div class="rounded-xl p-4"
-       style="background: rgba(139,92,246,0.08); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.45); box-shadow: 0 0 30px rgba(139,92,246,0.1) inset;">
-    <p class="text-xs mb-2" style="color: var(--primary-light);">🔥 Featured today</p>
-    <p class="text-sm" style="color: var(--blanco);">
-      Welcome to CYBERCOMM — the new gaming hub for players &amp; creators 🚀
-    </p>
-  </div>
-  
-  <livewire:feed.create-post />
-  <livewire:user.presence />
-  <livewire:feed.post-feed />
-
 </x-layouts.app>

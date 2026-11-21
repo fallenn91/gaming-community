@@ -27,20 +27,26 @@ class HandleUnfollow implements ShouldQueue
     public function handle(UserUnfollowed $event): void
     {
         $follower = $event->follower;
-
         $followed = $event->followed;
+
+        $follow = Follow::where('follower_id', $follower->id)
+            ->where('following_id', $followed->id)
+            ->first();
+
+        if ($follow) {
+            return;
+        }
 
         \DB::table('users')
             ->where('id', $follower->id)
             ->where('following_count', '>', 0)
             ->decrement('following_count');
- 
+
         \DB::table('users')
             ->where('id', $followed->id)
             ->where('followers_count', '>', 0)
             ->decrement('followers_count');
- 
-        // Reputación 
+
         $this->reputationService->lose($followed, 'follower_lost');
     }
 

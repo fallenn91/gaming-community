@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Community extends Model
 {
+    use HasFactory;
     protected $fillable = [
       'name',
       'game_id',
@@ -22,7 +24,12 @@ class Community extends Model
 
     public function users()
     {
-      return $this->belongsToMany(User::class)->withPivot('role');
+      return $this->belongsToMany(User::class, 'community_users')->withPivot(['role', 'contribution']);
+    }
+
+    public function members()
+    {
+      return $this->belongsToMany(User::class, 'community_users')->withPivot(['role', 'contribution', 'is_banned']);
     }
 
     public function owner()
@@ -43,5 +50,15 @@ class Community extends Model
     public function communityPosts()
     {
       return $this->hasMany(CommunityPost::class);
+    }
+
+    public function communityModeration()
+    {
+      return $this->hasMany(CommunityModeration::class);
+    }
+
+    public function joinRequests()
+    {
+      return $this->hasMany(CommunityJoinRequest::class);
     }
 }

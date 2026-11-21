@@ -1,33 +1,25 @@
 <?php
 
 namespace App\Services;
-use App\Models\User;
+
 use App\Events\UserLevelUp;
+use App\Models\User;
 
 class LevelService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function checkLevelUp(User $user): void
     {
-      $oldLevel = $user->level;
+        $oldLevel = (int) $user->level;
+        $newLevel = (int) floor(sqrt((int) $user->xp) / 50) + 1;
 
-      $newLevel = floor(sqrt($user->xp) / 50) + 1;
+        if ($newLevel <= $oldLevel) {
+            return;
+        }
 
-      if ($newLevel <= $oldLevel) {
-        return;
-      }
+        $user->update([
+            'level' => $newLevel,
+        ]);
 
-      $user->update([
-        'level' => $newLevel
-      ]);
-
-      event (new UserLevelUp($user, $newLevel));
+        event(new UserLevelUp($user, $newLevel));
     }
 }

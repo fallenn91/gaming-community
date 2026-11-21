@@ -40,10 +40,12 @@ class ReputationService
         return;
       }
 
-      User::whereKey($user->id)
-        ->update([
-          'reputation' => \DB::raw("GREATEST(0, reputation - {$points})")
-        ]);
+      $current = (int) $user->reputation;
+      $newValue = max(0, $current - $points);
+
+      User::whereKey($user->id)->update([
+          'reputation' => $newValue,
+      ]);
     }
 
     public function vote(User $target, User $voter, string $type): array
@@ -62,7 +64,10 @@ class ReputationService
       if ($type === 'upvote') {
         $target->increment('reputation', self::VOTES['upvote']);
       } else {
-        User::whereKey($target->id)->update(['reputation' => \DB::raw('GREATEST(0, reputation - ' . self::VOTES['downvote'] . ')')]);
+        $current = (int) $target->reputation;
+        $newValue = max(0, $current - self::VOTES['downvote']);
+
+        User::whereKey($target->id)->update(['reputation' => $newValue]);
       }
 
       \Illuminate\Support\Facades\Cache::put($cacheKey, $type, now()->addHours(24));
