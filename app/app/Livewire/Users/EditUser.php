@@ -72,7 +72,7 @@ class EditUser extends Component
       $user->update($data);
 
       $this->success = true;
-      $this->message = 'Perfil actualizado correctamente';
+      $this->message = 'Profile Updated Successfully';
 
       $this->password = '';
             

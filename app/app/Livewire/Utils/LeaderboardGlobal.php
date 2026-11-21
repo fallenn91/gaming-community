@@ -9,13 +9,15 @@ class LeaderboardGlobal extends Component
 {
     public function render()
     {
-        return view('livewire.utils.leaderboard-global', [
-            'users' => User::query()
-                ->orderByDesc('level')
-                ->orderByDesc('xp')
-                ->orderByDesc('reputation')
-                ->limit(50)
-                ->get(),
-        ]);
+      $leaderboard = User::query()
+        ->orderByDesc('xp')
+        ->orderByDesc('reputation')
+        ->orderByDesc('level')
+        ->limit(50)
+        ->get();
+
+    return view('livewire.utils.leaderboard-global', [
+        'leaderboard' => $leaderboard,
+    ]);
     }
 }

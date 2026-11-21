@@ -56,9 +56,12 @@ class Community extends Model
     {
       return $this->hasMany(CommunityModeration::class);
     }
+<<<<<<< HEAD
 
     public function joinRequests()
     {
       return $this->hasMany(CommunityJoinRequest::class);
     }
+=======
+>>>>>>> e033f0d5906636a2087459e996e4d2524ec76294
 }

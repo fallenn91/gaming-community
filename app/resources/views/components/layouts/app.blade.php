@@ -53,8 +53,13 @@
   <div class="mt-4 pt-4 border-t border-white/10">
     <h4 class="mb-2 text-sm font-semibold text-[#a78bfa]">Leaderboard</h4>
     <nav class="space-y-2 text-sm">
+<<<<<<< HEAD
       <a href="{{ route('weekly.leaderboard') }}" class="block rounded-xl px-3 py-2 transition hover:bg-[#a78bfa]/10">Top Weekly</a>
       <a href="{{ route('discover') }}" class="block rounded-xl px-3 py-2 transition hover:bg-[#a78bfa]/10">Top Global</a>
+=======
+      <a href="{{ route('leaderboard.users')}}" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Global</a>
+      <a href="" class="block px-3 py-2 rounded hover:bg-[#a78bfa]/10">Top Weekly</a>
+>>>>>>> e033f0d5906636a2087459e996e4d2524ec76294
     </nav>
   </div>
 </div>
